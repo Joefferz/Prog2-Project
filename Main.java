@@ -7,6 +7,12 @@ class Movie {
         this.movieID = movID;
         this.movieName = movName;
     }
+    public int getMovieID() {
+        return movieID;
+    }
+    public String getMovieName() {
+        return movieName;
+    }
 }
 
 abstract class Person {
@@ -17,6 +23,15 @@ abstract class Person {
         this.name = name;
         this.customerID = customerID;
         this.membership = membership;
+    }
+    public String getName() {
+        return name;
+    }
+    public int getCustomerID() {
+        return customerID;
+    }
+    public String getMembership() {
+        return membership;
     }
 }
 
@@ -34,6 +49,21 @@ class Student extends Person {
         this.schoolName = schoolName;
         this.grade = grade;
     }
+    public String getName() {
+        return super.getName();
+    }
+    public int getCustomerID() {
+        return super.getCustomerID();
+    }
+    public String getMembership() {
+        return super.getMembership();
+    }
+    public String getSchoolName() {
+        return schoolName;
+    }
+    public int getGrade() {
+        return grade;
+    }
 }
 
 class ExternalMember extends Person {
@@ -49,6 +79,21 @@ class ExternalMember extends Person {
         this.membership = membership;
         this.job = job;
         this.organization = organization;
+    }
+    public String getName() {
+        return super.getName();
+    }
+    public int getCustomerID() {
+        return super.getCustomerID();
+    }
+    public String getMembership() {
+        return super.getMembership();
+    }
+    public String getJob() {
+        return job;
+    }
+    public String getOrganization() {
+        return organization;
     }
 }
 
