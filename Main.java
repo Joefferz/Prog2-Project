@@ -28,6 +28,10 @@ abstract class Person {
         this.customerID = customerID;
         this.membership = membership;
     }
+    public String toString() {
+        return "Name: " + name + "\nID: " + customerID + "\nMembership: " + membership;
+    }
+    abstract void personalInfo();
     public String getName() {
         return name;
     }
