@@ -13,6 +13,10 @@ class Movie {
     public String getMovieName() {
         return movieName;
     }
+    public void show(){
+        System.out.println("Movie ID: " + movieID);
+        System.out.println("Movie Name: " + movieName);
+    }
 }
 
 abstract class Person {
