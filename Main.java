@@ -127,6 +127,14 @@ class Rental {
         this.customerID = customerID;
         this.movieID = movieID;
     }
+    public String getMovieAvailability(){
+        if(rentable){
+            return "Available";
+        }
+        else{
+            return "Not Available";
+        }
+    }
 }
 
 interface Payment {
