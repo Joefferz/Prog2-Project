@@ -1,8 +1,8 @@
 import java.util.*;
 
 class Movie {
-    int movieID;
-    String movieName;
+    private int movieID;
+    private String movieName;
     Movie(int movID, String movName) {
         this.movieID = movID;
         this.movieName = movName;
@@ -10,9 +10,9 @@ class Movie {
 }
 
 abstract class Person {
-    String name;
-    int customerID;
-    String membership;
+    protected String name;
+    protected int customerID;
+    protected String membership;
     Person(String name, int customerID, String membership) {
         this.name = name;
         this.customerID = customerID;
@@ -21,11 +21,11 @@ abstract class Person {
 }
 
 class Student extends Person {
-    String name;
-    int customerID;
-    String membership;
-    String schoolName;
-    int grade;
+    private String name;
+    private int customerID;
+    private String membership;
+    private String schoolName;
+    private int grade;
     Student(String name, int customerID, String membership, String schoolName, int grade) {
         super(name, customerID, membership);
         this.name = name;
@@ -37,11 +37,11 @@ class Student extends Person {
 }
 
 class ExternalMember extends Person {
-    String name;
-    int customerID;
-    String membership;
-    String job;
-    String organization;
+    private String name;
+    private int customerID;
+    private String membership;
+    private String job;
+    private String organization;
     ExternalMember(String name, int customerID, String membership, String job, String organization) {
         super(name, customerID, membership);
         this.name = name;
@@ -53,11 +53,11 @@ class ExternalMember extends Person {
 }
 
 class Rental {
-    int customerID;
-    int movieID;
-    boolean rentable = true;
-    String dateBorrowed;
-    String dateReturned;
+    private int customerID;
+    private int movieID;
+    private boolean rentable = true;
+    private String dateBorrowed;
+    private String dateReturned;
     Rental(int customerID, int movieID) {
         this.customerID = customerID;
         this.movieID = movieID;
