@@ -72,6 +72,12 @@ class Student extends Person {
     public int getGrade() {
         return grade;
     }
+    public String toString(){
+        return super.toString();
+    }
+    public void personalInfo(){
+        System.out.println("School Name: " + schoolName + "\nGrade: " + grade);
+    }
 }
 
 class ExternalMember extends Person {
@@ -102,6 +108,12 @@ class ExternalMember extends Person {
     }
     public String getOrganization() {
         return organization;
+    }
+    public String toString(){
+        return super.toString();
+    }
+    public void personalInfo(){
+        System.out.println("Job: " + job + "\nOrganization's name: " + organization);
     }
 }
 
