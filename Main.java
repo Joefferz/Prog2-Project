@@ -135,6 +135,14 @@ class Rental {
             return "Not Available";
         }
     }
+    public boolean updateMovieAvailability() {
+        if(dateBorrowed == null && dateReturned == null){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
 
 interface Payment {
