@@ -139,9 +139,16 @@ class Rental {
         if(dateBorrowed == null && dateReturned == null){
             return true;
         }
-        else{
+        else {
             return false;
         }
+    }
+    public int getNightsRented(){
+        String[]str = dateBorrowed.split("-");
+        int date1 = Integer.valueOf(str[1]);
+        String[] str2 = dateReturned.split("-");
+        int date2 = Integer.valueOf(str2[1]);
+
     }
 }
 
