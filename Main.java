@@ -159,6 +159,10 @@ interface Payment {
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        ArrayList<Student> st = new ArrayList<>();
+        ArrayList<ExternalMember> em = new ArrayList<>();
+        ArrayList<Movie> mov = new ArrayList<>();
+        ArrayList<Rental> r = new ArrayList<>();
         boolean flag = true;
         while (flag) {
             System.out.println("1. Add member");
@@ -172,6 +176,36 @@ public class Main {
             int choice = sc.nextInt();
             switch (choice) {
                 case 1:
+                    System.out.print("Enter membership (Student or External): ");
+                    String membership = sc.next();
+                    if(membership.equalsIgnoreCase("student")){
+                        System.out.print("Enter student's customer ID: ");
+                        int studentID = sc.nextInt();
+                        System.out.print("Enter student's name: ");
+                        String studentName = sc.next();
+                        System.out.print("Enter student's school name: ");
+                        String schoolName = sc.next();
+                        System.out.print("Enter student's grade: ");
+                        int grade = sc.nextInt();
+                        Student stu = new Student(studentName, studentID, membership, schoolName, grade);
+                        st.add(stu);
+                    }
+                    else if(membership.equalsIgnoreCase("external")){
+                        System.out.print("Enter external's customer ID: ");
+                        int externalID = sc.nextInt();
+                        System.out.print("Enter member's name: ");
+                        String externalName = sc.next();
+                        System.out.print("Enter member's job: ");
+                        String job = sc.next();
+                        System.out.print("Enter member's organization name: ");
+                        String organization = sc.next();
+                        ExternalMember exmem = new ExternalMember(externalName, externalID, membership, job, organization);
+                        em.add(exmem);
+                    }
+                    else{
+                        System.out.println("Invalid membership");
+                    }
+                    System.out.print("Customer successfully added.");
                     break;
                 case 2:
                     break;
