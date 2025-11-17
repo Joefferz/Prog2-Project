@@ -222,8 +222,8 @@ public class Main {
                         System.out.println(s.toString());
                     }
                     System.out.print("\nWould you like to check a student's personal info?(yes/no): ");
-                    String check = sc.next();
-                    if(check.equalsIgnoreCase("yes")){
+                    String check1 = sc.next();
+                    if(check1.equalsIgnoreCase("yes")){
                         System.out.print("Enter student's id: ");
                         int stID = sc.nextInt();
                         for(Student s: st){
@@ -232,7 +232,7 @@ public class Main {
                             }
                         }
                     }
-                    else if(check.equalsIgnoreCase("no")){
+                    else if(check1.equalsIgnoreCase("no")){
                         break;
                     }
                     else {
@@ -240,6 +240,27 @@ public class Main {
                     }
                     break;
                 case 4:
+                    System.out.println("List of external members: ");
+                    for(ExternalMember ext : em){
+                        System.out.println(ext.toString());
+                    }
+                    System.out.print("\nWould you like to check a member's personal info?(yes/no): ");
+                    String check2 = sc.next();
+                    if(check2.equalsIgnoreCase("yes")){
+                        System.out.print("Enter member's id: ");
+                        int extID = sc.nextInt();
+                        for(ExternalMember ext: em){
+                            if(ext.getCustomerID() == extID){
+                                ext.personalInfo();
+                            }
+                        }
+                    }
+                    else if(check2.equalsIgnoreCase("no")){
+                        break;
+                    }
+                    else {
+                        System.out.println("Invalid input");
+                    }
                     break;
                 case 5:
                     break;
