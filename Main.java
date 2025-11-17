@@ -208,6 +208,13 @@ public class Main {
                     System.out.print("Customer successfully added.");
                     break;
                 case 2:
+                    System.out.print("Enter movie ID: ");
+                    int movieID = sc.nextInt();
+                    System.out.print("Enter movie name: ");
+                    String movieName = sc.next();
+                    Movie movie = new Movie(movieID, movieName);
+                    mov.add(movie);
+                    System.out.print("Movie successfully added.");
                     break;
                 case 3:
                     break;
