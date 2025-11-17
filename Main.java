@@ -148,11 +148,51 @@ class Rental {
         int date1 = Integer.valueOf(str[1]);
         String[] str2 = dateReturned.split("-");
         int date2 = Integer.valueOf(str2[1]);
-
     }
 }
 
 interface Payment {
     public final double STUDENT_FEE = 5;
     public final double EXTERNAL_MEMBER_FEE = 10;
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        boolean flag = true;
+        while (flag) {
+            System.out.println("1. Add member");
+            System.out.println("2. Add movie");
+            System.out.println("3. Show students");
+            System.out.println("4. Show external members");
+            System.out.println("5. Show movies");
+            System.out.println("6. Rent movie");
+            System.out.println("7. Return a movie");
+            System.out.println("8. Exit");
+            int choice = sc.nextInt();
+            switch (choice) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    System.out.println("Exiting system...");
+                    flag = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
+            }
+        }
+    }
 }
