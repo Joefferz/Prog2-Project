@@ -217,6 +217,27 @@ public class Main {
                     System.out.print("Movie successfully added.");
                     break;
                 case 3:
+                    System.out.println("List of students:");
+                    for(Student s: st){
+                        System.out.println(s.toString());
+                    }
+                    System.out.print("\nWould you like to check a student's personal info?(yes/no): ");
+                    String check = sc.next();
+                    if(check.equalsIgnoreCase("yes")){
+                        System.out.print("Enter student's id: ");
+                        int stID = sc.nextInt();
+                        for(Student s: st){
+                            if(s.getCustomerID() == stID){
+                                s.personalInfo();
+                            }
+                        }
+                    }
+                    else if(check.equalsIgnoreCase("no")){
+                        break;
+                    }
+                    else {
+                        System.out.println("Invalid input");
+                    }
                     break;
                 case 4:
                     break;
