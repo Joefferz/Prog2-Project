@@ -263,6 +263,10 @@ public class Main {
                     }
                     break;
                 case 5:
+                    System.out.println("List of movies: ");
+                    for(Movie m : mov){
+                        m.show();
+                    }
                     break;
                 case 6:
                     break;
