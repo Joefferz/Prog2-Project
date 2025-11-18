@@ -269,6 +269,22 @@ public class Main {
                     }
                     break;
                 case 6:
+                    System.out.println("Which customer wants to rent?");
+                    System.out.println("List of all customers: ");
+                    for(Student stu : st){
+                        System.out.println(stu.toString());
+                    }
+                    for(ExternalMember ext : em){
+                        System.out.println(ext.toString());
+                    }
+                    System.out.print("Select which customer: ");
+                    int custID = sc.nextInt();
+                    System.out.println("Which movie does the customer want to rent?");
+                    for(Movie m : mov){
+                        m.show();
+                    }
+                    int movID = sc.nextInt();
+                    Rental rent = new Rental(custID, movID);
                     break;
                 case 7:
                     break;
