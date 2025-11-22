@@ -142,6 +142,9 @@ class Rental {
         this.customerRenterID = customerID;
         this.movieRentedID = movieID;
     }
+    public int getCustomerRenterID() {
+        return customerRenterID;
+    }
     /*public int getNightsRented(){
         String[]str = dateBorrowed.split("-");
         int date1 = Integer.valueOf(str[1]);
@@ -284,6 +287,7 @@ public class Main {
                     }
                     break;
                 case 6:
+                    System.out.println("Start a customer's rent: ");
                     System.out.println("Which customer wants to rent? (Enter 'Student' or 'External' member): ");
                     String memChoice = input.next();
                     if(memChoice.equalsIgnoreCase("student")){
@@ -317,7 +321,7 @@ public class Main {
                     rent.details();
                     break;
                 case 7:
-                    System.out.println("Start a return");
+                    System.out.println("Start a customer's return");
                     System.out.println("List of rentals: ");
                     for(Rental rental : r){
                         rental.details();
@@ -325,6 +329,11 @@ public class Main {
                     System.out.println("Select customer ID: ");
                     int cID = input.nextInt();
                     System.out.println("Customer's rental details: ");
+                    for(Rental rents : r){
+                        if (rents.getCustomerRenterID() == cID){
+                            rents.details();
+                        }
+                    }
                     System.out.println("Select movie ID: ");
                     int mID = input.nextInt();
                     for(Movie m : mov){
