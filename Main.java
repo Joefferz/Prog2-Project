@@ -16,14 +16,14 @@ class Movie {
         return movieName;
     }
     public String isRentable() {
-        if (this.rentable == true) {
+        if (this.rentable) {
             return "Available";
         } else {
             return "Rented";
         }
     }
     public void updateAvailability(){
-        if (this.rentable == true) {
+        if (this.rentable) {
             this.rentable = false;
         }
         else {
@@ -34,7 +34,6 @@ class Movie {
         System.out.println("Movie ID: " + movieID + "\nMovie Name: " + movieName + "\nStatus: " + isRentable());
     }
 }
-
 
 abstract class Person {
     protected String name;
@@ -135,13 +134,13 @@ class ExternalMember extends Person {
 }
 
 class Rental {
-    private int customerID;
-    private int movieID;
+    private int customerRenterID;
+    private int movieRentedID;
     private String dateBorrowed;
     private String dateReturned;
     Rental(int customerID, int movieID) {
-        this.customerID = customerID;
-        this.movieID = movieID;
+        this.customerRenterID = customerID;
+        this.movieRentedID = movieID;
     }
     /*public int getNightsRented(){
         String[]str = dateBorrowed.split("-");
@@ -150,8 +149,8 @@ class Rental {
         int date2 = Integer.valueOf(str2[1]);
     }*/
     public void details(){
-        System.out.println("Customer ID: " + customerID);
-        System.out.println("Movie ID: " + movieID);
+        System.out.println("Customer ID: " + customerRenterID);
+        System.out.println("Movie rented ID: " + movieRentedID);
     }
 }
 
@@ -181,7 +180,7 @@ public class Main {
             int choice = input.nextInt();
             switch (choice) {
                 case 1:
-                    System.out.print("Enter membership (Student or External): ");
+                    System.out.print("Enter membership (Enter 'Student' or 'External'): ");
                     String membership = input.next();
                     if(membership.equalsIgnoreCase("student")){
                         System.out.print("Enter student's customer ID: ");
@@ -232,8 +231,8 @@ public class Main {
                         }
                     }
                     System.out.print("\nWould you like to check a student's personal info?(yes/no): ");
-                    String check1 = input.next();
-                    if(check1.equalsIgnoreCase("yes")){
+                    String studentPINFO = input.next();
+                    if(studentPINFO.equalsIgnoreCase("yes")){
                         System.out.print("Enter student's id: ");
                         int stID = input.nextInt();
                         for(Student s: st){
@@ -242,7 +241,7 @@ public class Main {
                             }
                         }
                     }
-                    else if(check1.equalsIgnoreCase("no")){
+                    else if(studentPINFO.equalsIgnoreCase("no")){
                         break;
                     }
                     else {
@@ -261,8 +260,8 @@ public class Main {
                         }
                     }
                     System.out.print("\nWould you like to check a member's personal info?(yes/no): ");
-                    String check2 = input.next();
-                    if(check2.equalsIgnoreCase("yes")){
+                    String externalPINFO = input.next();
+                    if(externalPINFO.equalsIgnoreCase("yes")){
                         System.out.print("Enter member's id: ");
                         int extID = input.nextInt();
                         for(ExternalMember ext: em){
@@ -271,7 +270,7 @@ public class Main {
                             }
                         }
                     }
-                    else if(check2.equalsIgnoreCase("no")){
+                    else if(externalPINFO.equalsIgnoreCase("no")){
                         break;
                     }
                     else {
@@ -285,17 +284,19 @@ public class Main {
                     }
                     break;
                 case 6:
-                    System.out.println("Which customer wants to rent? (Select 'Student' or 'External' member): ");
-                    if(input.next().equalsIgnoreCase("student")){
+                    System.out.println("Which customer wants to rent? (Enter 'Student' or 'External' member): ");
+                    String memChoice = input.next();
+                    if(memChoice.equalsIgnoreCase("student")){
                         for(Student stu : st){
                             System.out.println(stu.toString());
                         }
-                    } else if (input.next().equalsIgnoreCase("external")){
+                    }
+                    else if (memChoice.equalsIgnoreCase("external")){
                         for(ExternalMember ext : em){
                             System.out.println(ext.toString());
                         }
                     }
-                    else{
+                    else {
                         System.out.println("Invalid membership.");
                     }
                     System.out.print("Enter customer's ID: ");
@@ -307,6 +308,7 @@ public class Main {
                     System.out.print("Enter movie's ID: ");
                     int movID = input.nextInt();
                     Rental rent = new Rental(cRentID, movID);
+                    r.add(rent);
                     for(Movie m : mov){
                         if(m.getMovieID() == movID){
                             m.updateAvailability();
@@ -315,6 +317,22 @@ public class Main {
                     rent.details();
                     break;
                 case 7:
+                    System.out.println("Start a return");
+                    System.out.println("List of rentals: ");
+                    for(Rental rental : r){
+                        rental.details();
+                    }
+                    System.out.println("Select customer ID: ");
+                    int cID = input.nextInt();
+                    System.out.println("Customer's rental details: ");
+                    System.out.println("Select movie ID: ");
+                    int mID = input.nextInt();
+                    for(Movie m : mov){
+                        if(m.getMovieID() == mID){
+                            m.updateAvailability();
+                        }
+                    }
+                    System.out.println("Movie successfully returned.");
                     break;
                 case 8:
                     System.out.println("Exiting system...");
