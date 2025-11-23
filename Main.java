@@ -55,7 +55,8 @@ public class Main {
                     break;
                 case 2:
                     System.out.print("Enter movie name: ");
-                    String movieName = input.next();
+                    input.nextLine();
+                    String movieName = input.nextLine();
                     System.out.print("Enter movie ID: ");
                     int movieID = input.nextInt();
                     Movie movie = new Movie(movieID, movieName);
