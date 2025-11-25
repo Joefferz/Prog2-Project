@@ -22,8 +22,8 @@ public class Main {
             int choice = input.nextInt();
             switch (choice) {
                 case 1:
-                    boolean isValid = true;
-                    while (isValid) {
+                    boolean memCheck = false;
+                    while (!memCheck) {
                         System.out.print("Select a membership (Enter 'Student' or 'External'): ");
                         String membership = input.next();
                         try {
@@ -38,7 +38,7 @@ public class Main {
                                 int grade = input.nextInt();
                                 Student stu = new Student(studentName, studentID, membership, schoolName, grade);
                                 st.add(stu);
-                                isValid = false;
+                                memCheck = true;
                             } else if (membership.equalsIgnoreCase("external")) {
                                 System.out.print("Enter external's customer ID: ");
                                 int externalID = input.nextInt();
@@ -50,14 +50,13 @@ public class Main {
                                 String organization = input.next();
                                 ExternalMember exMem = new ExternalMember(externalName, externalID, membership, job, organization);
                                 em.add(exMem);
-                                isValid = false;
+                                memCheck = true;
                             } else {
                                 throw new InvalidMembershipException("Invalid input. Please try again.");
                             }
                             System.out.println("Customer successfully added.");
                         } catch (Exception e) {
                             System.out.println(e.getMessage());
-                            break;
                         }
                     }
                     break;
