@@ -1,4 +1,5 @@
 import java.util.*;
+import java.time.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -153,8 +154,8 @@ public class Main {
                     }
                     System.out.print("Enter movie's ID: ");
                     int movID = input.nextInt();
-                    System.out.println("Enter date of rental (MM-DD-YYYY): ");
-                    String borrowDate = input.next();
+                    System.out.println("Enter date of rental (YYYY-MM-DD): ");
+                    LocalDate borrowDate = LocalDate.parse(input.next());
                     Rental rent = new Rental(cRentID, movID, borrowDate);
                     r.add(rent);
                     for(Movie m : mov){
@@ -180,12 +181,13 @@ public class Main {
                     }
                     System.out.println("Select movie ID: ");
                     int mID = input.nextInt();
-                    System.out.println("Enter return date (MM-DD-YYYY): ");
-                    String returnDate = input.next();
+                    System.out.println("Enter return date (YYYY-MM-DD): ");
+                    LocalDate returnDate = LocalDate.parse(input.next());
                     for(Rental customerRents : r){
                         if(customerRents.getCustomerRenterID() == cID){
                             customerRents.setDateReturned(returnDate);
                             customerRents.fullDetails();
+                            System.out.println("Rented for: " + customerRents.getNightsRented() + " days.");
                         }
                     }
                     for(Movie m : mov){

@@ -1,9 +1,13 @@
+import java.time.*;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
+
 public class Rental {
     private int customerRenterID;
     private int movieRentedID;
-    private String dateBorrowed;
-    private String dateReturned;
-    Rental(int customerID, int movieID, String dateBorrowed) {
+    private LocalDate dateBorrowed;
+    private LocalDate dateReturned;
+    Rental(int customerID, int movieID, LocalDate dateBorrowed) {
         this.customerRenterID = customerID;
         this.movieRentedID = movieID;
         this.dateBorrowed = dateBorrowed;
@@ -12,15 +16,15 @@ public class Rental {
     public int getCustomerRenterID() {
         return customerRenterID;
     }
-    public void setDateReturned(String dateReturned) {
+    public void setDateReturned(LocalDate dateReturned) {
         this.dateReturned = dateReturned;
     }
-    /*public int getNightsRented(){
-        String[]str = dateBorrowed.split("-");
-        int date1 = Integer.valueOf(str[1]);
-        String[] str2 = dateReturned.split("-");
-        int date2 = Integer.valueOf(str2[1]);
-    }*/
+    public int getNightsRented(){
+            LocalDate borrowDate = LocalDate.parse(dateBorrowed.toString());
+            LocalDate returnDate = LocalDate.parse(dateReturned.toString());
+            long daysDifference = ChronoUnit.DAYS.between(borrowDate, returnDate);
+            return Math.toIntExact(Math.abs(daysDifference));
+    }
     public void details(){
         System.out.println("Customer ID: " + customerRenterID);
         System.out.println("Movie rented ID: " + movieRentedID);
