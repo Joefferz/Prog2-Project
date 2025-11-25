@@ -187,7 +187,12 @@ public class Main {
                         if(customerRents.getCustomerRenterID() == cID){
                             customerRents.setDateReturned(returnDate);
                             customerRents.fullDetails();
-                            System.out.println("Rented for: " + customerRents.getNightsRented() + " days.");
+                            System.out.println("Nights rented for: " + customerRents.getNightsRented() + " days.");
+                            for(Student s : st){
+                                if(s.getCustomerID() == cID){
+                                    System.out.printf("Fee : %.2f%n", customerRents.calculate(s.getMembership()));
+                                }
+                            }
                         }
                     }
                     for(Movie m : mov){
