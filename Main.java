@@ -22,37 +22,44 @@ public class Main {
             int choice = input.nextInt();
             switch (choice) {
                 case 1:
-                    System.out.print("Select a membership (Enter 'Student' or 'External'): ");
-                    String membership = input.next();
-                    if(membership.equalsIgnoreCase("student")){
-                        System.out.print("Enter student's customer ID: ");
-                        int studentID = input.nextInt();
-                        System.out.print("Enter student's name: ");
-                        String studentName = input.next();
-                        System.out.print("Enter student's school name: ");
-                        String schoolName = input.next();
-                        System.out.print("Enter student's grade: ");
-                        int grade = input.nextInt();
-                        Student stu = new Student(studentName, studentID, membership, schoolName, grade);
-                        st.add(stu);
+                    boolean isValid = true;
+                    while (isValid) {
+                        System.out.print("Select a membership (Enter 'Student' or 'External'): ");
+                        String membership = input.next();
+                        try {
+                            if (membership.equalsIgnoreCase("student")) {
+                                System.out.print("Enter student's customer ID: ");
+                                int studentID = input.nextInt();
+                                System.out.print("Enter student's name: ");
+                                String studentName = input.next();
+                                System.out.print("Enter student's school name: ");
+                                String schoolName = input.next();
+                                System.out.print("Enter student's grade: ");
+                                int grade = input.nextInt();
+                                Student stu = new Student(studentName, studentID, membership, schoolName, grade);
+                                st.add(stu);
+                                isValid = false;
+                            } else if (membership.equalsIgnoreCase("external")) {
+                                System.out.print("Enter external's customer ID: ");
+                                int externalID = input.nextInt();
+                                System.out.print("Enter member's name: ");
+                                String externalName = input.next();
+                                System.out.print("Enter member's job: ");
+                                String job = input.next();
+                                System.out.print("Enter member's organization name: ");
+                                String organization = input.next();
+                                ExternalMember exMem = new ExternalMember(externalName, externalID, membership, job, organization);
+                                em.add(exMem);
+                                isValid = false;
+                            } else {
+                                throw new InvalidMembershipException("Invalid input. Please try again.");
+                            }
+                            System.out.println("Customer successfully added.");
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
                     }
-                    else if(membership.equalsIgnoreCase("external")){
-                        System.out.print("Enter external's customer ID: ");
-                        int externalID = input.nextInt();
-                        System.out.print("Enter member's name: ");
-                        String externalName = input.next();
-                        System.out.print("Enter member's job: ");
-                        String job = input.next();
-                        System.out.print("Enter member's organization name: ");
-                        String organization = input.next();
-                        ExternalMember exMem = new ExternalMember(externalName, externalID, membership, job, organization);
-                        em.add(exMem);
-                    }
-                    else{
-                        System.out.println("Invalid membership");
-                        break;
-                    }
-                    System.out.println("Customer successfully added.");
                     break;
                 case 2:
                     System.out.print("Enter movie name: ");
@@ -211,5 +218,11 @@ public class Main {
                     break;
             }
         }
+    }
+}
+
+class InvalidMembershipException extends Exception{
+    public InvalidMembershipException(String message){
+        super(message);
     }
 }
