@@ -4,11 +4,14 @@ import java.time.*;
 public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
+
         ArrayList<Student> st = new ArrayList<>();
         ArrayList<ExternalMember> em = new ArrayList<>();
         ArrayList<Movie> mov = new ArrayList<>();
         ArrayList<Rental> r = new ArrayList<>();
+
         boolean flag = true;
+
         while (flag) {
             System.out.println("1. Add new member");
             System.out.println("2. Add new movie");
@@ -18,45 +21,70 @@ public class Main {
             System.out.println("6. Start a rental");
             System.out.println("7. Start a return");
             System.out.println("8. Exit");
+
             System.out.print("What would you like to do? (Enter your choice): ");
             int choice = input.nextInt();
+
             switch (choice) {
                 case 1:
                     boolean memCheck = false;
+                    input.nextLine();
+
                     while (!memCheck) {
                         System.out.print("Select a membership (Enter 'Student' or 'External'): ");
-                        String membership = input.next();
+                        String membership = input.nextLine();
+
                         try {
                             if (membership.equalsIgnoreCase("student")) {
                                 System.out.print("Enter student's customer ID: ");
                                 int studentID = input.nextInt();
+                                input.nextLine();
+
                                 System.out.print("Enter student's name: ");
-                                String studentName = input.next();
+                                String studentName = input.nextLine();
+
                                 System.out.print("Enter student's school name: ");
-                                String schoolName = input.next();
+                                String schoolName = input.nextLine();
+
                                 System.out.print("Enter student's grade: ");
                                 int grade = input.nextInt();
+                                input.nextLine();
+
                                 Student stu = new Student(studentName, studentID, membership, schoolName, grade);
                                 st.add(stu);
+
+                                System.out.println("Customer successfully added.");
                                 memCheck = true;
+
                             } else if (membership.equalsIgnoreCase("external")) {
                                 System.out.print("Enter external's customer ID: ");
                                 int externalID = input.nextInt();
+                                input.nextLine();
+
                                 System.out.print("Enter member's name: ");
-                                String externalName = input.next();
+                                String externalName = input.nextLine();
+
                                 System.out.print("Enter member's job: ");
-                                String job = input.next();
+                                String job = input.nextLine();
+
                                 System.out.print("Enter member's organization name: ");
-                                String organization = input.next();
+                                String organization = input.nextLine();
+
                                 ExternalMember exMem = new ExternalMember(externalName, externalID, membership, job, organization);
                                 em.add(exMem);
+
+                                System.out.println("Customer successfully added.");
                                 memCheck = true;
                             } else {
-                                throw new InvalidMembershipException("Invalid input. Please try again.");
+                                System.out.println("Invalid membership. Please try again.");
                             }
-                            System.out.println("Customer successfully added.");
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
+                        }
+                        catch (InputMismatchException e) {
+                            System.out.println("Invalid input. Please try again");
+                            input.nextLine();
+                        }
+                        catch (Exception e) {
+                            System.out.println("Unexpected Error: " + e.getMessage());
                         }
                     }
                     break;
@@ -217,11 +245,5 @@ public class Main {
                     break;
             }
         }
-    }
-}
-
-class InvalidMembershipException extends Exception{
-    public InvalidMembershipException(String message){
-        super(message);
     }
 }
