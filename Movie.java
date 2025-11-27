@@ -1,13 +1,13 @@
 public class Movie {
-    private int movieID;
+    private String movieID;
     private String movieName;
     private boolean rentable;
-    Movie(int movID, String movName) {
+    Movie(String movID, String movName) {
         this.movieID = movID;
         this.movieName = movName;
         this.rentable = true;
     }
-    public int getMovieID() {
+    public String getMovieID() {
         return movieID;
     }
     public String getMovieName() {

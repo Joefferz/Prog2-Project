@@ -1,8 +1,8 @@
 abstract class Person {
     protected String name;
-    protected int customerID;
+    protected String customerID;
     protected String membership;
-    Person(String name, int customerID, String membership) {
+    Person(String name, String customerID, String membership) {
         this.name = name;
         this.customerID = customerID;
         this.membership = membership;
@@ -14,7 +14,7 @@ abstract class Person {
     public String getName() {
         return name;
     }
-    public int getCustomerID() {
+    public String getCustomerID() {
         return customerID;
     }
     public String getMembership() {

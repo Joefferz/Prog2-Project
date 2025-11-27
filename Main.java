@@ -38,15 +38,46 @@ public class Main {
                     boolean memCheck = false;
                     input.nextLine();
 
+                    //Checking valid membership
                     while (!memCheck) {
                         System.out.print("Select a membership (Enter 'Student' or 'External'): ");
-                        String membership = input.next();
+                        String membership = input.nextLine();
 
                         try {
                             if (membership.equalsIgnoreCase("student")) {
-                                System.out.print("Enter student's customer ID: ");
-                                int studentID = input.nextInt();
-                                input.nextLine();
+
+                                //Checking student ID
+                                boolean studentIDCheck = false;
+                                String studentID = null;
+
+                                while (!studentIDCheck) {
+                                    System.out.print("Enter student's customer ID (e.g., ST1, ST12, ST123): ");
+                                    studentID = input.nextLine().toUpperCase();
+
+                                    //ST followed by 1 to 3 digits
+                                    if (studentID.matches("ST\\d{1,3}")) {
+
+                                        //Check for duplicate ID
+                                        boolean dupeSTIDCheck = false;
+
+                                        for (Student s : st) {
+                                            if (s.getCustomerID().equalsIgnoreCase(studentID)) {
+                                                dupeSTIDCheck = true;
+                                                break;
+                                            }
+                                        }
+
+                                        if (dupeSTIDCheck) {
+                                            System.out.println("Student ID already exists.");
+                                        }
+                                        else {
+                                            studentIDCheck = true;
+                                        }
+                                    }
+                                    else {
+                                        throw new Exception("Invalid ID. Must start with 'ST' and have 1-3 digits (max 5 chars).");
+                                    }
+                                }
 
                                 System.out.print("Enter student's name: ");
                                 String studentName = input.nextLine();
@@ -65,9 +96,39 @@ public class Main {
                                 memCheck = true;
 
                             } else if (membership.equalsIgnoreCase("external")) {
-                                System.out.print("Enter external's customer ID: ");
-                                int externalID = input.nextInt();
-                                input.nextLine();
+
+                                //Checking external member ID
+                                boolean memberIDCheck = false;
+                                String externalID = null;
+
+                                while (!memberIDCheck) {
+                                    System.out.print("Enter member's customer ID (e.g., EX1, EX12, EX123): ");
+                                    externalID = input.nextLine().toUpperCase();
+
+                                    //EX followed by 1 to 3 digits
+                                    if (externalID.matches("EX\\d{1,3}")) {
+
+                                        //Check for duplicate ID
+                                        boolean dupeEXIDCheck = false;
+
+                                        for (ExternalMember ex : em) {
+                                            if (ex.getCustomerID().equalsIgnoreCase(externalID)) {
+                                                dupeEXIDCheck = true;
+                                                break;
+                                            }
+                                        }
+
+                                        if (dupeEXIDCheck) {
+                                            System.out.println("Student ID already exists.");
+                                        }
+                                        else {
+                                            memberIDCheck = true;
+                                        }
+                                    }
+                                    else {
+                                        throw new Exception("Invalid ID. Must start with 'EX' and have 1-3 digits (max 5 chars).");
+                                    }
+                                }
 
                                 System.out.print("Enter member's name: ");
                                 String externalName = input.nextLine();
@@ -93,7 +154,7 @@ public class Main {
                             input.nextLine();
                         }
                         catch (Exception e) {
-                            System.out.println("Unexpected Error: " + e.getMessage());
+                            System.out.println(e.getMessage());
                         }
                     }
                     break;
@@ -104,12 +165,61 @@ public class Main {
 
                     while (!movCheck) {
                         try {
-                            System.out.print("Enter movie name: ");
-                            String movieName = input.nextLine();
 
-                            System.out.print("Enter movie ID: ");
-                            int movieID = input.nextInt();
-                            input.nextLine();
+                            //Check for duplicate movie name
+                            boolean movieNameCheck = false;
+                            String movieName = null;
+                            while (!movieNameCheck) {
+                                System.out.print("Enter movie name: ");
+                                movieName = input.nextLine();
+
+                                boolean dupeNameCheck = false;
+                                for (Movie m : mov) {
+                                    if (m.getMovieName().equalsIgnoreCase(movieName)) {
+                                        dupeNameCheck = true;
+                                        break;
+                                    }
+                                }
+
+                                if (dupeNameCheck) {
+                                    System.out.println("Movie already exists.");
+                                }
+                                else {
+                                    movieNameCheck = true;
+                                }
+                            }
+
+                            boolean movieIDCheck = false;
+                            String movieID = null;
+
+                            //Checking movie ID
+                            while (!movieIDCheck) {
+                                System.out.print("Enter movie's ID (e.g., MV1, MV12, MV123): ");
+                                movieID = input.nextLine().toUpperCase();
+
+                                //MV followed by 1 to 3 digits
+                                if (movieID.matches("MV\\d{1,3}")) {
+
+                                    //Check for duplicate ID
+                                    boolean dupeMVIDCheck = false;
+
+                                    for (Movie mv : mov) {
+                                        if (mv.getMovieID().equalsIgnoreCase(movieID)) {
+                                            dupeMVIDCheck = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (dupeMVIDCheck) {
+                                        System.out.println("Movie ID already exists.");
+                                    }
+                                    else {
+                                        movieIDCheck = true;
+                                    }
+                                } else {
+                                    throw new Exception("Invalid ID. Must start with 'MV' and have 1-3 digits (max 5 chars).");
+                                }
+                            }
 
                             Movie movie = new Movie(movieID, movieName);
                             mov.add(movie);
@@ -122,7 +232,7 @@ public class Main {
                             input.nextLine();
                         }
                         catch (Exception e) {
-                            System.out.println("Unexpected Error: " + e.getMessage());
+                            System.out.println("Error: " + e.getMessage());
                         }
                     }
                     break;
@@ -145,10 +255,10 @@ public class Main {
 
                     if(studentPINFO.equalsIgnoreCase("yes")) {
                         System.out.print("Enter student's id: ");
-                        int stID = input.nextInt();
+                        String stID = input.next();
 
                         for(Student s: st) {
-                            if(s.getCustomerID() == stID) {
+                            if(s.getCustomerID().equalsIgnoreCase(stID)) {
                                 s.personalInfo();
                             }
                         }
@@ -179,10 +289,10 @@ public class Main {
 
                     if(externalPINFO.equalsIgnoreCase("yes")) {
                         System.out.print("Enter member's id: ");
-                        int extID = input.nextInt();
+                        String extID = input.next();
 
                         for(ExternalMember ext: em) {
-                            if(ext.getCustomerID() == extID) {
+                            if(ext.getCustomerID().equalsIgnoreCase(extID)) {
                                 ext.personalInfo();
                             }
                         }
@@ -228,17 +338,17 @@ public class Main {
                             if (!input.hasNextInt()) {
                                 throw new Exception("Customer ID must be a number.");
                             }
-                            int cRentID = input.nextInt();
+                            String cRentID = input.next();
 
                             boolean customerFound = false;
 
                             for (Student s : st) {
-                                if (s.getCustomerID() == cRentID) {
+                                if (s.getCustomerID().equalsIgnoreCase(cRentID)) {
                                     customerFound = true;
                                 }
                             }
                             for (ExternalMember e : em) {
-                                if (e.getCustomerID() == cRentID) {
+                                if (e.getCustomerID().equalsIgnoreCase(cRentID)) {
                                     customerFound = true;
                                 }
                             }
@@ -265,11 +375,11 @@ public class Main {
                             if (!input.hasNextInt()) {
                                 throw new Exception("Movie ID must be a number.");
                             }
-                            int movID = input.nextInt();
+                            String movID = input.next();
 
                             Movie selected = null;
                             for (Movie m : mov) {
-                                if (m.getMovieID() == movID) {
+                                if (m.getMovieID().equalsIgnoreCase(movID)) {
                                     selected = m;
                                 }
                             }
@@ -317,11 +427,11 @@ public class Main {
                         rental.details();
                     }
 
-                    int cID;
+                    String cID;
                     while (true) {
                         try {
                             System.out.print("Select customer ID: ");
-                            cID = Integer.parseInt(input.next());
+                            cID = input.next();
                             break;
                         } catch (NumberFormatException e) {
                             System.out.println("Invalid ID. Please enter a valid ID.");
@@ -330,16 +440,16 @@ public class Main {
 
                     System.out.println("Customer's rental details: ");
                     for (Rental rents : r) {
-                        if (rents.getCustomerRenterID() == cID) {
+                        if (rents.getCustomerRenterID().equalsIgnoreCase(cID)) {
                             rents.fullDetails();
                         }
                     }
 
-                    int mID;
+                    String mID;
                     while (true) {
                         try {
                             System.out.print("Select movie ID: ");
-                            mID = Integer.parseInt(input.next());
+                            mID = input.next();
                             break;
                         } catch (NumberFormatException e) {
                             System.out.println("Invalid movie ID. Please enter a valid ID.");
@@ -359,14 +469,14 @@ public class Main {
 
                     //processing return
                     for (Rental customerRents : r) {
-                        if (customerRents.getCustomerRenterID() == cID) {
+                        if (customerRents.getCustomerRenterID().equalsIgnoreCase(cID)) {
                             customerRents.setDateReturned(returnDate);
                             customerRents.fullDetails();
 
                             System.out.println("Nights rented for: " + customerRents.getNightsRented() + " days.");
 
                             for (Student s : st) {
-                                if (s.getCustomerID() == cID) {
+                                if (s.getCustomerID().equalsIgnoreCase(cID)) {
                                     System.out.printf("Fee: $%.2f%n", customerRents.calculate(s.getMembership()));
                                 }
                             }
@@ -374,7 +484,7 @@ public class Main {
                     }
 
                     for (Movie m : mov) {
-                        if (m.getMovieID() == mID) {
+                        if (m.getMovieID().equalsIgnoreCase(mID)) {
                             m.updateAvailability();
                         }
                     }

@@ -2,19 +2,19 @@ import java.time.*;
 import java.time.temporal.ChronoUnit;
 
 public class Rental implements Payment {
-    private int customerRenterID;
-    private int movieRentedID;
+    private String customerRenterID;
+    private String movieRentedID;
     private LocalDate dateBorrowed;
     private LocalDate dateReturned;
     private double fee;
 
-    Rental(int customerID, int movieID, LocalDate dateBorrowed) {
+    Rental(String customerID, String movieID, LocalDate dateBorrowed) {
         this.customerRenterID = customerID;
         this.movieRentedID = movieID;
         this.dateBorrowed = dateBorrowed;
         this.dateReturned = null;
     }
-    public int getCustomerRenterID() {
+    public String getCustomerRenterID() {
         return customerRenterID;
     }
     public void setDateReturned(LocalDate dateReturned) {

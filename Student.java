@@ -1,10 +1,10 @@
 public class Student extends Person {
     private String name;
-    private int customerID;
+    private String customerID;
     private String membership;
     private String schoolName;
     private int grade;
-    Student(String name, int customerID, String membership, String schoolName, int grade) {
+    Student(String name, String customerID, String membership, String schoolName, int grade) {
         super(name, customerID, membership);
         this.name = name;
         this.customerID = customerID;
@@ -15,7 +15,7 @@ public class Student extends Person {
     public String getName() {
         return super.getName();
     }
-    public int getCustomerID() {
+    public String getCustomerID() {
         return super.getCustomerID();
     }
     public String getMembership() {
