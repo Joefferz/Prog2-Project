@@ -1,5 +1,6 @@
 import java.util.*;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.io.*;
 
 public class Main {
@@ -315,6 +316,8 @@ public class Main {
                 case 6: //Starting a customer's movie rental
                     boolean rentalDone = false;
 
+                    input.nextLine();
+                    //Check customer's rent
                     while (!rentalDone) {
                         try {
 
@@ -322,6 +325,7 @@ public class Main {
 
                             System.out.println("List of all members:");
 
+                            //Check if list is empty
                             if (st.isEmpty() && em.isEmpty()) {
                                 throw new Exception("No members available.");
                             }
@@ -336,29 +340,14 @@ public class Main {
                                 }
                             }
 
+                            //Check for valid customer ID
                             System.out.print("Enter customer's ID: ");
-                            if (!input.hasNext()) {
-                                throw new Exception("Invalid customer ID.");
-                            }
-                            String cRentID = input.next();
+                            String cRentID = input.nextLine().trim();
 
-                            boolean customerFound = false;
+                            //Finding customer
+                            findCustomer(st, em, cRentID);
 
-                            for (Student s : st) {
-                                if (s.getCustomerID().equalsIgnoreCase(cRentID)) {
-                                    customerFound = true;
-                                }
-                            }
-                            for (ExternalMember e : em) {
-                                if (e.getCustomerID().equalsIgnoreCase(cRentID)) {
-                                    customerFound = true;
-                                }
-                            }
-
-                            if (!customerFound) {
-                                throw new Exception("Customer ID does not exist.");
-                            }
-
+                            //List available movies
                             System.out.println("\n---Available movies---");
                             boolean available = false;
 
@@ -369,16 +358,16 @@ public class Main {
                                 }
                             }
 
+                            //Check if list is empty
                             if (!available) {
                                 throw new Exception("No movies available to rent.");
                             }
 
+                            //Check for valid movie ID
                             System.out.print("Enter movie ID: ");
-                            if (!input.hasNext()) {
-                                throw new Exception("Invalid movie ID.");
-                            }
-                            String movRentID = input.next();
+                            String movRentID = input.nextLine().trim();
 
+                            //Finding movie
                             Movie selected = null;
                             for (Movie m : mov) {
                                 if (m.getMovieID().equalsIgnoreCase(movRentID)) {
@@ -394,6 +383,7 @@ public class Main {
                                 throw new Exception("Movie is not available.");
                             }
 
+                            //Processing rental
                             LocalDate rentDate = LocalDate.now();
 
                             Rental rent = new Rental(cRentID, movRentID, rentDate);
@@ -407,7 +397,6 @@ public class Main {
 
                         } catch (Exception e) {
                             System.out.println("Unexpected error: " + e.getMessage());
-                            input.nextLine();
                         }
                     }
                     break;
@@ -415,6 +404,7 @@ public class Main {
                 case 7: //Starting a customer's return
                     boolean returnDone = false;
 
+                    input.nextLine();
                     //Check customer's return
                     while (!returnDone) {
                         try {
@@ -436,27 +426,9 @@ public class Main {
 
                             //Check for valid ID
                             System.out.print("Enter customer's ID: ");
-                            if (!input.hasNext()) {
-                                throw new Exception("Invalid customer ID.");
-                            }
-                            String cReturnID = input.next();
+                            String cReturnID = input.nextLine().trim();
 
-                            boolean customerFound = false;
-
-                            for (Student s : st) {
-                                if (s.getCustomerID().equalsIgnoreCase(cReturnID)) {
-                                    customerFound = true;
-                                }
-                            }
-                            for (ExternalMember e : em) {
-                                if (e.getCustomerID().equalsIgnoreCase(cReturnID)) {
-                                    customerFound = true;
-                                }
-                            }
-
-                            if (!customerFound) {
-                                throw new Exception("Customer ID does not exist.");
-                            }
+                            findCustomer(st, em, cReturnID);
 
                             //Shows member's rentals
                             System.out.println("\n---Member's rentals details---");
@@ -468,10 +440,7 @@ public class Main {
 
                             //Check for valid movie ID
                             System.out.print("Enter movie ID: ");
-                            if (!input.hasNext()) {
-                                throw new Exception("Invalid movie ID.");
-                            }
-                            String movReturnID = input.next();
+                            String movReturnID = input.nextLine().trim();
 
                             //Finding movie to return
                             Movie selected = null;
@@ -484,8 +453,7 @@ public class Main {
                             //Check if rented by same customer
                             boolean rentedByCustomer = false;
                             for (Rental rentals : r) {
-                                if (rentals.getCustomerRenterID().equalsIgnoreCase(cReturnID)
-                                        && rentals.getMovieRentedID().equalsIgnoreCase(movReturnID)) {
+                                if (rentals.getCustomerRenterID().equalsIgnoreCase(cReturnID) && rentals.getMovieRentedID().equalsIgnoreCase(movReturnID)) {
                                     rentedByCustomer = true;
                                     break;
                                 }
@@ -502,11 +470,12 @@ public class Main {
                             }
 
                             //Check for valid return date
+                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
                             LocalDate returnDate;
                             while (true) {
                                 try {
                                     System.out.print("Enter return date (MM/DD/YYYY): ");
-                                    returnDate = LocalDate.parse(input.next());
+                                    returnDate = LocalDate.parse(input.next(), dtf);
                                     break;
                                 }
                                 catch (Exception e) {
@@ -530,7 +499,9 @@ public class Main {
                                     }
                                     //Member fee
                                     for (ExternalMember e : em) {
-                                        System.out.printf("Fee: $%.2f%n", customerRents.calculate(e.getMembership()));
+                                        if (e.getCustomerID().equalsIgnoreCase(cReturnID)) {
+                                            System.out.printf("Fee: $%.2f%n", customerRents.calculate(e.getMembership()));
+                                        }
                                     }
                                 }
                             }
@@ -543,7 +514,6 @@ public class Main {
 
                         } catch (Exception e) {
                             System.out.println("Error: " + e.getMessage());
-                            input.nextLine();
                         }
                     }
                     break;
@@ -557,6 +527,25 @@ public class Main {
                     System.out.println("Invalid choice. Please try again.");
                     break;
             }
+        }
+    }
+
+    private static void findCustomer(ArrayList<Student> st, ArrayList<ExternalMember> em, String cReturnID) throws Exception {
+        boolean customerFound = false;
+
+        for (Student s : st) {
+            if (s.getCustomerID().equalsIgnoreCase(cReturnID)) {
+                customerFound = true;
+            }
+        }
+        for (ExternalMember e : em) {
+            if (e.getCustomerID().equalsIgnoreCase(cReturnID)) {
+                customerFound = true;
+            }
+        }
+
+        if (!customerFound) {
+            throw new Exception("Customer ID does not exist.");
         }
     }
 }
