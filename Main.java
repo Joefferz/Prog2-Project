@@ -1,5 +1,6 @@
 import java.util.*;
 import java.time.*;
+import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -10,9 +11,15 @@ public class Main {
         ArrayList<Movie> mov = new ArrayList<>();
         ArrayList<Rental> r = new ArrayList<>();
 
+        File stFile = new File("Prog2Project-master\\Data\\Students.txt");
+        File exFile = new File("Prog2Project-master\\Data\\ExternalMembers.txt");
+        File movFile = new File("Prog2Project-master\\Data\\Movies.txt");
+        File rentalFile = new File("Prog2Project-master\\Data\\Rentals.txt");
+
         boolean flag = true;
 
         while (flag) {
+            System.out.println("MOVIE RENTAL SYSTEM\n");
             System.out.println("1. Add new member");
             System.out.println("2. Add new movie");
             System.out.println("3. Display students");
@@ -201,28 +208,20 @@ public class Main {
                     while (!rentalDone) {
                         try {
 
-
                             System.out.println("START A CUSTOMER'S RENTAL:\n");
 
-                            System.out.print("Which customer wants to rent? (Enter 'Student' / 'External'): ");
-                            String memChoice = input.next();
+                            System.out.println("---List of all rentals:---\n");
 
-                            if (!memChoice.equalsIgnoreCase("student") &&
-                                    !memChoice.equalsIgnoreCase("external")) {
-                                throw new Exception("Invalid membership type.");
-                            }
-
-                            if (memChoice.equalsIgnoreCase("student")) {
-                                if (st.isEmpty()) {
-                                    throw new Exception("No student members available.");
-                                }
-                                for (Student stu : st) System.out.println(stu);
+                            if (st.isEmpty() && em.isEmpty()) {
+                                throw new Exception("No members available.");
                             }
                             else {
-                                if (em.isEmpty()) {
-                                    throw new Exception("No external members available.");
+                                for (Student stu : st) {
+                                    System.out.println(stu);
                                 }
-                                for (ExternalMember ext : em) System.out.println(ext);
+                                for (ExternalMember ext : em) {
+                                    System.out.println(ext);
+                                }
                             }
 
                             System.out.print("Enter customer's ID: ");
@@ -233,22 +232,22 @@ public class Main {
 
                             boolean customerFound = false;
 
-                            if (memChoice.equalsIgnoreCase("student")) {
-                                for (Student s : st)
-                                    if (s.getCustomerID() == cRentID) {
-                                        customerFound = true;
-                                    }
-                            } else {
-                                for (ExternalMember e : em)
-                                    if (e.getCustomerID() == cRentID) {
-                                        customerFound = true;
-                                    }
+                            for (Student s : st) {
+                                if (s.getCustomerID() == cRentID) {
+                                    customerFound = true;
+                                }
+                            }
+                            for (ExternalMember e : em) {
+                                if (e.getCustomerID() == cRentID) {
+                                    customerFound = true;
+                                }
                             }
 
-                            if (!customerFound)
+                            if (!customerFound) {
                                 throw new Exception("Customer ID does not exist.");
+                            }
 
-                            System.out.println("\nAvailable movies:");
+                            System.out.println("\n---Available movies---");
                             boolean available = false;
 
                             for (Movie m : mov) {
@@ -258,8 +257,9 @@ public class Main {
                                 }
                             }
 
-                            if (!available)
+                            if (!available) {
                                 throw new Exception("No movies available to rent.");
+                            }
 
                             System.out.print("Enter movie ID: ");
                             if (!input.hasNextInt()) {
@@ -268,14 +268,19 @@ public class Main {
                             int movID = input.nextInt();
 
                             Movie selected = null;
-                            for (Movie m : mov)
-                                if (m.getMovieID() == movID) selected = m;
+                            for (Movie m : mov) {
+                                if (m.getMovieID() == movID) {
+                                    selected = m;
+                                }
+                            }
 
-                            if (selected == null)
+                            if (selected == null) {
                                 throw new Exception("Movie ID does not exist.");
+                            }
 
-                            if (!selected.isRentable().equalsIgnoreCase("Available"))
+                            if (!selected.isRentable().equalsIgnoreCase("Available")) {
                                 throw new Exception("Movie is not available.");
+                            }
 
                             System.out.print("Enter date of rental (YYYY-MM-DD): ");
                             LocalDate date;
@@ -352,7 +357,7 @@ public class Main {
                         }
                     }
 
-                    //process return
+                    //processing return
                     for (Rental customerRents : r) {
                         if (customerRents.getCustomerRenterID() == cID) {
                             customerRents.setDateReturned(returnDate);
