@@ -119,7 +119,7 @@ public class Main {
                                         }
 
                                         if (dupeEXIDCheck) {
-                                            System.out.println("Student ID already exists.");
+                                            System.out.println("Member ID already exists.");
                                         }
                                         else {
                                             memberIDCheck = true;
