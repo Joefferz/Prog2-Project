@@ -320,23 +320,25 @@ public class Main {
 
                             System.out.println("START A CUSTOMER'S RENTAL:\n");
 
-                            System.out.println("---List of all rentals:---\n");
+                            System.out.println("List of all members:");
 
                             if (st.isEmpty() && em.isEmpty()) {
                                 throw new Exception("No members available.");
                             }
                             else {
+                                System.out.println("---Students---");
                                 for (Student stu : st) {
                                     System.out.println(stu);
                                 }
+                                System.out.println("---Members---");
                                 for (ExternalMember ext : em) {
                                     System.out.println(ext);
                                 }
                             }
 
                             System.out.print("Enter customer's ID: ");
-                            if (!input.hasNextInt()) {
-                                throw new Exception("Customer ID must be a number.");
+                            if (!input.hasNext()) {
+                                throw new Exception("Invalid customer ID.");
                             }
                             String cRentID = input.next();
 
@@ -372,36 +374,29 @@ public class Main {
                             }
 
                             System.out.print("Enter movie ID: ");
-                            if (!input.hasNextInt()) {
-                                throw new Exception("Movie ID must be a number.");
+                            if (!input.hasNext()) {
+                                throw new Exception("Invalid movie ID.");
                             }
-                            String movID = input.next();
+                            String movRentID = input.next();
 
                             Movie selected = null;
                             for (Movie m : mov) {
-                                if (m.getMovieID().equalsIgnoreCase(movID)) {
+                                if (m.getMovieID().equalsIgnoreCase(movRentID)) {
                                     selected = m;
                                 }
                             }
 
                             if (selected == null) {
-                                throw new Exception("Movie ID does not exist.");
+                                throw new Exception("Invalid movie ID.");
                             }
 
                             if (!selected.isRentable().equalsIgnoreCase("Available")) {
                                 throw new Exception("Movie is not available.");
                             }
 
-                            System.out.print("Enter date of rental (YYYY-MM-DD): ");
-                            LocalDate date;
+                            LocalDate rentDate = LocalDate.now();
 
-                            try {
-                                date = LocalDate.parse(input.next());
-                            } catch (Exception e) {
-                                throw new Exception("Invalid date format. Use YYYY-MM-DD.");
-                            }
-
-                            Rental rent = new Rental(cRentID, movID, date);
+                            Rental rent = new Rental(cRentID, movRentID, rentDate);
                             r.add(rent);
                             selected.updateAvailability();
 
@@ -413,83 +408,144 @@ public class Main {
                         } catch (Exception e) {
                             System.out.println("Unexpected error: " + e.getMessage());
                             input.nextLine();
-
-                            System.out.println("Please try again.");
                         }
                     }
                     break;
 
                 case 7: //Starting a customer's return
-                    System.out.println("START A CUSTOMER'S RETURN");
+                    boolean returnDone = false;
 
-                    System.out.println("List of rentals: ");
-                    for (Rental rental : r) {
-                        rental.details();
-                    }
-
-                    String cID;
-                    while (true) {
+                    //Check customer's return
+                    while (!returnDone) {
                         try {
-                            System.out.print("Select customer ID: ");
-                            cID = input.next();
-                            break;
-                        } catch (NumberFormatException e) {
-                            System.out.println("Invalid ID. Please enter a valid ID.");
-                        }
-                    }
 
-                    System.out.println("Customer's rental details: ");
-                    for (Rental rents : r) {
-                        if (rents.getCustomerRenterID().equalsIgnoreCase(cID)) {
-                            rents.fullDetails();
-                        }
-                    }
+                            System.out.println("START A CUSTOMER'S RETURN:\n");
 
-                    String mID;
-                    while (true) {
-                        try {
-                            System.out.print("Select movie ID: ");
-                            mID = input.next();
-                            break;
-                        } catch (NumberFormatException e) {
-                            System.out.println("Invalid movie ID. Please enter a valid ID.");
-                        }
-                    }
+                            System.out.println("List of all rentals:");
 
-                    LocalDate returnDate;
-                    while (true) {
-                        try {
-                            System.out.print("Enter return date (YYYY-MM-DD): ");
-                            returnDate = LocalDate.parse(input.next());
-                            break;
-                        } catch (Exception e) {
-                            System.out.println("Invalid date format. Try again (YYYY-MM-DD).");
-                        }
-                    }
-
-                    //processing return
-                    for (Rental customerRents : r) {
-                        if (customerRents.getCustomerRenterID().equalsIgnoreCase(cID)) {
-                            customerRents.setDateReturned(returnDate);
-                            customerRents.fullDetails();
-
-                            System.out.println("Nights rented for: " + customerRents.getNightsRented() + " days.");
-
-                            for (Student s : st) {
-                                if (s.getCustomerID().equalsIgnoreCase(cID)) {
-                                    System.out.printf("Fee: $%.2f%n", customerRents.calculate(s.getMembership()));
+                            //Check if rentals are empty
+                            if (r.isEmpty()) {
+                                throw new Exception("No rentals available.");
+                            }
+                            else {
+                                System.out.println("------------");
+                                for (Rental rental : r) {
+                                    rental.details();
                                 }
                             }
+
+                            //Check for valid ID
+                            System.out.print("Enter customer's ID: ");
+                            if (!input.hasNext()) {
+                                throw new Exception("Invalid customer ID.");
+                            }
+                            String cReturnID = input.next();
+
+                            boolean customerFound = false;
+
+                            for (Student s : st) {
+                                if (s.getCustomerID().equalsIgnoreCase(cReturnID)) {
+                                    customerFound = true;
+                                }
+                            }
+                            for (ExternalMember e : em) {
+                                if (e.getCustomerID().equalsIgnoreCase(cReturnID)) {
+                                    customerFound = true;
+                                }
+                            }
+
+                            if (!customerFound) {
+                                throw new Exception("Customer ID does not exist.");
+                            }
+
+                            //Shows member's rentals
+                            System.out.println("\n---Member's rentals details---");
+                            for (Rental rents : r) {
+                                if (rents.getCustomerRenterID().equalsIgnoreCase(cReturnID)) {
+                                    rents.fullDetails();
+                                }
+                            }
+
+                            //Check for valid movie ID
+                            System.out.print("Enter movie ID: ");
+                            if (!input.hasNext()) {
+                                throw new Exception("Invalid movie ID.");
+                            }
+                            String movReturnID = input.next();
+
+                            //Finding movie to return
+                            Movie selected = null;
+                            for (Movie m : mov) {
+                                if (m.getMovieID().equalsIgnoreCase(movReturnID)) {
+                                    selected = m;
+                                }
+                            }
+
+                            //Check if rented by same customer
+                            boolean rentedByCustomer = false;
+                            for (Rental rentals : r) {
+                                if (rentals.getCustomerRenterID().equalsIgnoreCase(cReturnID)
+                                        && rentals.getMovieRentedID().equalsIgnoreCase(movReturnID)) {
+                                    rentedByCustomer = true;
+                                    break;
+                                }
+                            }
+
+                            if (selected == null) {
+                                throw new Exception("Movie ID does not exist.");
+                            }
+                            else if (!rentedByCustomer) {
+                                System.out.println("Movie is not rented by this customer.");
+                            }
+                            else {
+                                System.out.println("Movie found.");
+                            }
+
+                            //Check for valid return date
+                            LocalDate returnDate;
+                            while (true) {
+                                try {
+                                    System.out.print("Enter return date (MM/DD/YYYY): ");
+                                    returnDate = LocalDate.parse(input.next());
+                                    break;
+                                }
+                                catch (Exception e) {
+                                    System.out.println("Invalid return date. Try again.");
+                                }
+                            }
+
+                            //Processing return
+                            for (Rental customerRents : r) {
+                                if (customerRents.getCustomerRenterID().equalsIgnoreCase(cReturnID)) {
+                                    customerRents.setDateReturned(returnDate);
+                                    customerRents.fullDetails();
+
+                                    System.out.println("Nights rented for: " + customerRents.getNightsRented() + " days.");
+
+                                    //Student fee
+                                    for (Student s : st) {
+                                        if (s.getCustomerID().equalsIgnoreCase(cReturnID)) {
+                                            System.out.printf("Fee: $%.2f%n", customerRents.calculate(s.getMembership()));
+                                        }
+                                    }
+                                    //Member fee
+                                    for (ExternalMember e : em) {
+                                        System.out.printf("Fee: $%.2f%n", customerRents.calculate(e.getMembership()));
+                                    }
+                                }
+                            }
+
+                            //Updates movie availability
+                            selected.updateAvailability();
+
+                            System.out.println("Movie successfully returned");
+                            returnDone = true;
+
+                        } catch (Exception e) {
+                            System.out.println("Error: " + e.getMessage());
+                            input.nextLine();
                         }
                     }
-
-                    for (Movie m : mov) {
-                        if (m.getMovieID().equalsIgnoreCase(mID)) {
-                            m.updateAvailability();
-                        }
-                    }
-
-                    System.out.println("Movie successfully returned.");
                     break;
 
                 case 8: //Exiting the system

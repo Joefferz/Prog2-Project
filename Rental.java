@@ -1,5 +1,6 @@
 import java.time.*;
 import java.time.temporal.ChronoUnit;
+import java.time.format.DateTimeFormatter;
 
 public class Rental implements Payment {
     private String customerRenterID;
@@ -17,6 +18,9 @@ public class Rental implements Payment {
     public String getCustomerRenterID() {
         return customerRenterID;
     }
+    public String getMovieRentedID() {
+        return customerRenterID;
+    }
     public void setDateReturned(LocalDate dateReturned) {
         this.dateReturned = dateReturned;
     }
@@ -29,15 +33,16 @@ public class Rental implements Payment {
     public void details() {
         System.out.println("Customer ID: " + customerRenterID);
         System.out.println("Movie rented ID: " + movieRentedID);
+        System.out.println("Borrowed on: " + dateBorrowed.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
     }
     public void fullDetails() {
         System.out.println("Customer ID: " + customerRenterID);
         System.out.println("Movie rented ID: " + movieRentedID);
-        System.out.println("Borrowed on: " + dateBorrowed);
+        System.out.println("Borrowed on: " + dateBorrowed.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
         if (dateReturned == null) {
             System.out.println("Not returned.");
         } else {
-            System.out.println("Returned on: " + dateReturned);
+            System.out.println("Returned on: " + dateReturned.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
         }
     }
     public double calculate(String membership) {
