@@ -18,11 +18,7 @@ public class Movie {
     }
 
     public String isRentable() {
-        if (this.rentable) {
-            return "Available";
-        } else {
-            return "Rented";
-        }
+        return rentable ? "Available" : "Unavailable";
     }
 
     public void updateAvailability(){

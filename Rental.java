@@ -28,6 +28,14 @@ public class Rental implements Payment {
         this.dateReturned = dateReturned;
     }
 
+    public LocalDate getDateBorrowed() {
+        return dateBorrowed;
+    }
+
+    public LocalDate getDateReturned() {
+        return dateReturned;
+    }
+
     public int getNightsRented() {
         if (dateReturned.isBefore(dateBorrowed)) {
             throw new IllegalStateException("Return date cannot be before borrow date.");
