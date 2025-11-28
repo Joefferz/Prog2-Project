@@ -25,8 +25,12 @@ public class Rental implements Payment {
         this.dateReturned = dateReturned;
     }
     public int getNightsRented() {
+        if (dateReturned.isBefore(dateBorrowed)) {
+            throw new IllegalStateException("Return date cannot be before borrow date.");
+        }
+
         long daysDifference = ChronoUnit.DAYS.between(dateBorrowed, dateReturned);
-        return Math.toIntExact(Math.abs(daysDifference));
+        return Math.toIntExact(daysDifference);
     }
     public void details() {
         System.out.println("Customer ID: " + customerRenterID);

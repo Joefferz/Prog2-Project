@@ -469,13 +469,19 @@ public class Main {
                                 System.out.println("Movie found.");
                             }
 
-                            //Check for valid return date
+                            //Format date input
                             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
                             LocalDate returnDate;
+                            //Check for valid return date
                             while (true) {
                                 try {
                                     System.out.print("Enter return date (MM/DD/YYYY): ");
-                                    returnDate = LocalDate.parse(input.next(), dtf);
+                                    returnDate = LocalDate.parse(input.nextLine().trim(), dtf);
+
+                                    if(!returnDate.isAfter(LocalDate.now())) {
+                                        System.out.println("Return date must be AFTER borrow date.");
+                                        continue;
+                                    }
                                     break;
                                 }
                                 catch (Exception e) {
