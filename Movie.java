@@ -2,17 +2,21 @@ public class Movie {
     private String movieID;
     private String movieName;
     private boolean rentable;
+
     Movie(String movID, String movName) {
         this.movieID = movID;
         this.movieName = movName;
         this.rentable = true;
     }
+
     public String getMovieID() {
         return movieID;
     }
+
     public String getMovieName() {
         return movieName;
     }
+
     public String isRentable() {
         if (this.rentable) {
             return "Available";
@@ -20,14 +24,11 @@ public class Movie {
             return "Rented";
         }
     }
+
     public void updateAvailability(){
-        if (this.rentable) {
-            this.rentable = false;
-        }
-        else {
-            this.rentable = true;
-        }
+        this.rentable = !this.rentable;
     }
+
     public void show() {
         System.out.println("Movie ID: " + movieID + "\nMovie Name: " + movieName + "\nStatus: " + isRentable());
     }

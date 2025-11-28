@@ -15,15 +15,19 @@ public class Rental implements Payment {
         this.dateBorrowed = dateBorrowed;
         this.dateReturned = null;
     }
+
     public String getCustomerRenterID() {
         return customerRenterID;
     }
+
     public String getMovieRentedID() {
         return movieRenterID;
     }
+
     public void setDateReturned(LocalDate dateReturned) {
         this.dateReturned = dateReturned;
     }
+
     public int getNightsRented() {
         if (dateReturned.isBefore(dateBorrowed)) {
             throw new IllegalStateException("Return date cannot be before borrow date.");
@@ -32,27 +36,39 @@ public class Rental implements Payment {
         long daysDifference = ChronoUnit.DAYS.between(dateBorrowed, dateReturned);
         return Math.toIntExact(daysDifference);
     }
+
     public void details() {
         System.out.println("Customer ID: " + customerRenterID);
         System.out.println("Movie rented ID: " + movieRenterID);
         System.out.println("Borrowed on: " + dateBorrowed.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
     }
+
     public void fullDetails() {
         System.out.println("Customer ID: " + customerRenterID);
         System.out.println("Movie rented ID: " + movieRenterID);
         System.out.println("Borrowed on: " + dateBorrowed.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+
         if (dateReturned == null) {
             System.out.println("Not returned.");
-        } else {
+        }
+        else
+        {
             System.out.println("Returned on: " + dateReturned.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
         }
     }
+
     public double calculate(String membership) {
+        int nights = getNightsRented();
+        int extraNights = Math.max(0, nights - 7);
+
         if (membership.equalsIgnoreCase("student")) {
-            this.fee = getNightsRented() - 7 + STUDENT_FEE;
-        } else {
-            this.fee = getNightsRented() - 7 + EXTERNAL_MEMBER_FEE;
+            this.fee = 5 + (extraNights);
         }
+        else
+        {
+            this.fee = 10 + (extraNights * 2);
+        }
+
         return this.fee;
     }
 }

@@ -20,7 +20,9 @@ public class Main {
         boolean flag = true;
 
         while (flag) {
-            System.out.println("MOVIE RENTAL SYSTEM\n");
+            System.out.println("--------------------");
+            System.out.println("MOVIE RENTAL SYSTEM");
+            System.out.println("--------------------");
             System.out.println("1. Add new member");
             System.out.println("2. Add new movie");
             System.out.println("3. Display students");
@@ -29,6 +31,7 @@ public class Main {
             System.out.println("6. Start a rental");
             System.out.println("7. Start a return");
             System.out.println("8. Exit");
+            System.out.println("--------------------");
 
             System.out.print("What would you like to do? (Enter your choice): ");
             int choice = input.nextInt();
@@ -36,6 +39,7 @@ public class Main {
             switch (choice) {
 
                 case 1: //Adding a new member, 'Student' or 'External'
+                    System.out.println("---ADD A NEW MEMBER---");
                     boolean memCheck = false;
                     input.nextLine();
 
@@ -93,7 +97,8 @@ public class Main {
                                 Student stu = new Student(studentName, studentID, membership, schoolName, grade);
                                 st.add(stu);
 
-                                System.out.println("Customer successfully added.");
+                                System.out.println("--------------------");
+                                System.out.println("Customer successfully added.\n");
                                 memCheck = true;
 
                             } else if (membership.equalsIgnoreCase("external")) {
@@ -143,7 +148,8 @@ public class Main {
                                 ExternalMember exMem = new ExternalMember(externalName, externalID, membership, job, organization);
                                 em.add(exMem);
 
-                                System.out.println("Customer successfully added.");
+                                System.out.println("--------------------");
+                                System.out.println("Customer successfully added.\n");
                                 memCheck = true;
                             }
                             else {
@@ -161,6 +167,7 @@ public class Main {
                     break;
 
                 case 2: //Adding a new movie
+                    System.out.println("---ADD A NEW MOVIE---");
                     boolean movCheck = false;
                     input.nextLine();
 
@@ -225,7 +232,8 @@ public class Main {
                             Movie movie = new Movie(movieID, movieName);
                             mov.add(movie);
 
-                            System.out.println("Movie successfully added.");
+                            System.out.println("--------------------");
+                            System.out.println("Movie successfully added.\n");
                             movCheck = true;
                         }
                         catch (InputMismatchException e) {
@@ -239,7 +247,7 @@ public class Main {
                     break;
 
                 case 3: //Listing all students
-                    System.out.println("List of students:");
+                    System.out.println("---STUDENT LIST---");
 
                     if(st.isEmpty()) {
                         System.out.println("\nNo list of students found.");
@@ -273,7 +281,7 @@ public class Main {
                     break;
 
                 case 4: //Listing all external members
-                    System.out.println("List of external members: ");
+                    System.out.println("---MEMBER LIST---");
 
                     if(em.isEmpty()) {
                         System.out.println("No list of external members found.");
@@ -307,13 +315,14 @@ public class Main {
                     break;
 
                 case 5: //Listing all movies
-                    System.out.println("List of movies: ");
+                    System.out.println("---MOVIE LIST---");
                     for(Movie m : mov) {
                         m.show();
                     }
                     break;
 
                 case 6: //Starting a customer's movie rental
+                    System.out.println("--------------------");
                     boolean rentalDone = false;
 
                     input.nextLine();
@@ -368,20 +377,7 @@ public class Main {
                             String movRentID = input.nextLine().trim();
 
                             //Finding movie
-                            Movie selected = null;
-                            for (Movie m : mov) {
-                                if (m.getMovieID().equalsIgnoreCase(movRentID)) {
-                                    selected = m;
-                                }
-                            }
-
-                            if (selected == null) {
-                                throw new Exception("Invalid movie ID.");
-                            }
-
-                            if (!selected.isRentable().equalsIgnoreCase("Available")) {
-                                throw new Exception("Movie is not available.");
-                            }
+                            Movie selected = getMovie(mov, movRentID);
 
                             //Processing rental
                             LocalDate rentDate = LocalDate.now();
@@ -402,6 +398,7 @@ public class Main {
                     break;
 
                 case 7: //Starting a customer's return
+                    System.out.println("--------------------");
                     boolean returnDone = false;
 
                     input.nextLine();
@@ -534,6 +531,24 @@ public class Main {
                     break;
             }
         }
+    }
+
+    private static Movie getMovie(ArrayList<Movie> mov, String movRentID) throws Exception {
+        Movie selected = null;
+        for (Movie m : mov) {
+            if (m.getMovieID().equalsIgnoreCase(movRentID)) {
+                selected = m;
+            }
+        }
+
+        if (selected == null) {
+            throw new Exception("Invalid movie ID.");
+        }
+
+        if (!selected.isRentable().equalsIgnoreCase("Available")) {
+            throw new Exception("Movie is not available.");
+        }
+        return selected;
     }
 
     private static void findCustomer(ArrayList<Student> st, ArrayList<ExternalMember> em, String cReturnID) throws Exception {
