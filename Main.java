@@ -39,7 +39,7 @@ public class Main {
             switch (choice) {
 
                 case 1: //Adding a new member, 'Student' or 'External'
-                    System.out.println("---ADD A NEW MEMBER---");
+                    System.out.println("--- ADD A NEW MEMBER ---");
                     boolean memCheck = false;
                     input.nextLine();
 
@@ -167,7 +167,7 @@ public class Main {
                     break;
 
                 case 2: //Adding a new movie
-                    System.out.println("---ADD A NEW MOVIE---");
+                    System.out.println("--- ADD A NEW MOVIE ---");
                     boolean movCheck = false;
                     input.nextLine();
 
@@ -247,7 +247,7 @@ public class Main {
                     break;
 
                 case 3: //Listing all students
-                    System.out.println("---STUDENT LIST---");
+                    System.out.println("--- STUDENT LIST ---");
 
                     if(st.isEmpty()) {
                         System.out.println("\nNo list of students found.");
@@ -281,7 +281,7 @@ public class Main {
                     break;
 
                 case 4: //Listing all external members
-                    System.out.println("---MEMBER LIST---");
+                    System.out.println("--- MEMBER LIST ---");
 
                     if(em.isEmpty()) {
                         System.out.println("No list of external members found.");
@@ -315,7 +315,7 @@ public class Main {
                     break;
 
                 case 5: //Listing all movies
-                    System.out.println("---MOVIE LIST---");
+                    System.out.println("--- MOVIE LIST ---");
                     for(Movie m : mov) {
                         m.show();
                     }
@@ -348,26 +348,31 @@ public class Main {
 
                         //List available movies
                         System.out.println("\n--- Available Movies ---");
-                        boolean foundAvailable = false;
-
+                        ArrayList<Movie> availableMovies = new ArrayList<>();
                         for (Movie m : mov) {
                             if (m.isRentable().equalsIgnoreCase("Available")) {
                                 m.show();
-                                foundAvailable = true;
+                                availableMovies.add(m);
                             }
                         }
 
-                        if (!foundAvailable)
+                        if (availableMovies.isEmpty()) {
                             throw new Exception("No movies available to rent.");
+                        }
 
                         //Enter movie ID
                         System.out.print("Enter movie ID: ");
                         String movRentID = input.nextLine().trim();
 
-                        Movie selected = getMovie(mov, movRentID);
+                        Movie selected = getMovie(availableMovies, movRentID, true);
 
-                        if (!selected.isRentable().equalsIgnoreCase("Available")) {
-                            throw new Exception("This movie is NOT available for rent.");
+                        //Preventing renting same movie multiple times
+                        for (Rental rent : r) {
+                            if (rent.getCustomerRenterID().equalsIgnoreCase(cRentID) &&
+                                    rent.getMovieRentedID().equalsIgnoreCase(movRentID) &&
+                                    rent.getDateReturned() == null) {
+                                throw new Exception("This customer has already rented this movie and has not returned it yet.");
+                            }
                         }
 
                         //Create rental
@@ -407,59 +412,51 @@ public class Main {
                         System.out.print("Enter customer's ID: ");
                         String cReturnID = input.nextLine().trim();
 
-                        boolean hasRental = false;
+                        findCustomer(st, em, cReturnID);
+
+                        ArrayList<Rental> customerRentals = new ArrayList<>();
                         for (Rental rent : r) {
                             if (rent.getCustomerRenterID().equalsIgnoreCase(cReturnID)) {
-                                rent.fullDetails();
-                                hasRental = true;
+                                customerRentals.add(rent);
                             }
                         }
 
-                        if (!hasRental) {
-                            throw new Exception("This customer has no rentals.");
-                        }
-
-                        findCustomer(st, em, cReturnID);
+                        if (customerRentals.isEmpty()) throw new Exception("This customer has no rentals.");
 
                         //List customer's rentals
                         System.out.println("\n--- Member's Rentals ---");
-                        for (Rental rent : r) {
-                            if (rent.getCustomerRenterID().equalsIgnoreCase(cReturnID)) {
+                        for (Rental rent : customerRentals) {
                                 rent.fullDetails();
-                            }
                         }
 
                         //Enter movie ID
                         System.out.print("Enter movie ID to return: ");
                         String movReturnID = input.nextLine().trim();
 
-                        Movie selected = getMovie(mov, movReturnID);
-
                         //Look for rental
                         Rental activeRental = null;
-                        Rental alreadyReturned = null;
+                        Rental everRented = null;
 
-                        for (Rental rent : r) {
-                            if (rent.getCustomerRenterID().equalsIgnoreCase(cReturnID)
-                                    && rent.getMovieRentedID().equalsIgnoreCase(movReturnID)) {
-
+                        //Find rental object for this movie
+                        for (Rental rent : customerRentals) {
+                            if (rent.getMovieRentedID().equalsIgnoreCase(movReturnID)) {
+                                everRented = rent;
                                 if (rent.getDateReturned() == null) {
-                                    activeRental = rent; // Active rental
-                                } else {
-                                    alreadyReturned = rent; // Previously returned
+                                    activeRental = rent; //current active rental
                                 }
                             }
                         }
 
-                        //No rental found
-                        if (activeRental == null && alreadyReturned == null) {
+                        if (everRented == null) {
                             throw new Exception("This customer NEVER rented this movie.");
                         }
 
-                        //Already returned
                         if (activeRental == null) {
                             throw new Exception("This rental has ALREADY been returned.");
                         }
+
+                        //Find movie object
+                        Movie selected = getMovie(mov, movReturnID, false);
 
                         System.out.println("Movie found. Proceeding with return.");
 
@@ -492,15 +489,16 @@ public class Main {
 
                         //Calculate fee
                         double finalFee = 0;
-
                         for (Student s : st) {
                             if (s.getCustomerID().equalsIgnoreCase(cReturnID)) {
                                 finalFee = activeRental.calculate(s.getMembership());
+                                break;
                             }
                         }
                         for (ExternalMember e : em) {
                             if (e.getCustomerID().equalsIgnoreCase(cReturnID)) {
                                 finalFee = activeRental.calculate(e.getMembership());
+                                break;
                             }
                         }
 
@@ -527,7 +525,7 @@ public class Main {
         }
     }
 
-    private static Movie getMovie(ArrayList<Movie> mov, String movRentID) throws Exception {
+    private static Movie getMovie(ArrayList<Movie> mov, String movRentID, boolean forRental) throws Exception {
         Movie selected = null;
         for (Movie m : mov) {
             if (m.getMovieID().equalsIgnoreCase(movRentID)) {
@@ -539,7 +537,7 @@ public class Main {
             throw new Exception("Invalid movie ID.");
         }
 
-        if (!selected.isRentable().equalsIgnoreCase("Available")) {
+        if (forRental && !selected.isRentable().equalsIgnoreCase("Available")) {
             throw new Exception("Movie is not available.");
         }
         return selected;
