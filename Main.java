@@ -19,7 +19,7 @@
         public static void main(String[] args) {
             Scanner input = new Scanner(System.in);
 
-            // Single members list (Students + ExternalMembers)
+            //Member (Students + ExternalMembers)
             ArrayList<Person> members = loadList("members.json",
                     new TypeToken<ArrayList<Person>>(){}.getType());
 
@@ -265,7 +265,7 @@
                 }
 
                 System.out.print("Enter customer's ID: ");
-                String cRentID = input.nextLine().trim();
+                String cRentID = input.nextLine().trim().toUpperCase();
 
                 Person customer = findCustomer(members, cRentID);
 
@@ -281,7 +281,7 @@
                 if (availableMovies.isEmpty()) throw new Exception("No movies available to rent.");
 
                 System.out.print("Enter movie ID: ");
-                String movRentID = input.nextLine().trim();
+                String movRentID = input.nextLine().trim().toUpperCase();
 
                 Movie selected = getMovie(availableMovies, movRentID, true);
 
@@ -315,10 +315,13 @@
                 if (rentals.isEmpty()) throw new Exception("No rentals available.");
 
                 System.out.println("\n--- All Rentals ---");
-                for (Rental rent : rentals) rent.details();
+                for (Rental rent : rentals) {
+                    rent.details();
+                    System.out.println("--------------------");
+                }
 
                 System.out.print("Enter customer's ID: ");
-                String cReturnID = input.nextLine().trim();
+                String cReturnID = input.nextLine().trim().toUpperCase();
 
                 Person customer = findCustomer(members, cReturnID);
 
@@ -336,7 +339,7 @@
                 }
 
                 System.out.print("Enter movie ID to return: ");
-                String movReturnID = input.nextLine().trim();
+                String movReturnID = input.nextLine().trim().toUpperCase();
 
                 Rental activeRental = null, everRented = null;
                 for (Rental rent : customerRentals) {
