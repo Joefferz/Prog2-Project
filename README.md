@@ -26,11 +26,17 @@ It allows users to:
 
 ## HOW TO RUN
 
-Dowload this project's ZIP file by clicking: 
+Download this project's ZIP file by clicking: <>Code --> Download ZIP
 
-> <>Code --> Download ZIP
->
-> Next, run project via src/Main.java
+### RECOMMENDED
+
+Depending on which IDE you have, you may need to search up how to import the project <br>
+and how to add gson 2.10.1 to your library
+
+1. Open your IDE
+2. Import the project
+3. Add Gson 2.10.1 library to the project
+4. Run Main.java
 
 ---
 
