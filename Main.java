@@ -3,6 +3,11 @@
     import java.time.*;
     import java.time.format.DateTimeFormatter;
     import java.io.*;
+
+    import Exceptions.MemberAlreadyExistsException;
+    import Exceptions.MovieAlreadyExistsException;
+    import Exceptions.MovieNotFoundException;
+    import Exceptions.MovieUnavailableException;
     import com.google.gson.*;
     import com.google.gson.reflect.TypeToken;
     import com.google.gson.TypeAdapter;
