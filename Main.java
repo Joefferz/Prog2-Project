@@ -334,7 +334,7 @@
 
                 System.out.println("\n--- Member's Rentals ---");
                 for (Rental rent : customerRentals) {
-                    rent.fullDetails();
+                    rent.details();
                     System.out.println("--------------------");
                 }
 
@@ -372,7 +372,7 @@
                 }
 
                 activeRental.setDateReturned(returnDate);
-                activeRental.fullDetails();
+                activeRental.details();
                 System.out.println("Nights rented: " + activeRental.getNightsRented());
 
                 double finalFee = activeRental.calculate(customer.getMembership());
@@ -412,7 +412,7 @@
             @Override
             public void write(JsonWriter jsonWriter, LocalDate localDate) throws IOException {
                 if (localDate == null) {
-                    jsonWriter.nullValue();   // <-- IMPORTANT
+                    jsonWriter.nullValue();
                     return;
                 }
                 jsonWriter.value(localDate.toString());
@@ -421,7 +421,7 @@
             @Override
             public LocalDate read(JsonReader jsonReader) throws IOException {
                 if (jsonReader.peek() == com.google.gson.stream.JsonToken.NULL) {
-                    jsonReader.nextNull();    // <-- IMPORTANT
+                    jsonReader.nextNull();
                     return null;
                 }
                 return LocalDate.parse(jsonReader.nextString());

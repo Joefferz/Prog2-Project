@@ -4,9 +4,6 @@ public class ExternalMember extends Person {
 
     ExternalMember(String name, String customerID, String membership, String job, String organization) {
         super(name, customerID, membership);
-        this.name = name;
-        this.customerID = customerID;
-        this.membership = membership;
         this.job = job;
         this.organization = organization;
     }

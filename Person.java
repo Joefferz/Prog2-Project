@@ -13,7 +13,7 @@ abstract class Person {
         return "Name: " + this.name + "\nID: " + this.customerID + "\nMembership: " + this.membership;
     }
 
-    abstract void personalInfo();
+    public abstract void personalInfo();
 
     public String getName() {
         return this.name;

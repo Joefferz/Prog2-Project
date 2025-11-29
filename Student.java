@@ -4,9 +4,6 @@ public class Student extends Person {
 
     Student(String name, String customerID, String membership, String schoolName, int grade) {
         super(name, customerID, membership);
-        this.name = name;
-        this.customerID = customerID;
-        this.membership = membership;
         this.schoolName = schoolName;
         this.grade = grade;
     }

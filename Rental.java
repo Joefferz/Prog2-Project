@@ -4,14 +4,13 @@ import java.time.format.DateTimeFormatter;
 
 public class Rental implements Payment {
     private String customerRenterID;
-    private String movieRenterID;
+    private String movieRentedID;
     private LocalDate dateBorrowed;
     private LocalDate dateReturned;
-    private double fee;
 
     Rental(String customerID, String movieID, LocalDate dateBorrowed) {
         this.customerRenterID = customerID;
-        this.movieRenterID = movieID;
+        this.movieRentedID = movieID;
         this.dateBorrowed = dateBorrowed;
         this.dateReturned = null;
     }
@@ -21,7 +20,7 @@ public class Rental implements Payment {
     }
 
     public String getMovieRentedID() {
-        return this.movieRenterID;
+        return this.movieRentedID;
     }
 
     public void setDateReturned(LocalDate dateReturned) {
@@ -47,13 +46,7 @@ public class Rental implements Payment {
 
     public void details() {
         System.out.println("Customer ID: " + customerRenterID);
-        System.out.println("Movie rented ID: " + movieRenterID);
-        System.out.println("Borrowed on: " + dateBorrowed.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
-    }
-
-    public void fullDetails() {
-        System.out.println("Customer ID: " + customerRenterID);
-        System.out.println("Movie rented ID: " + movieRenterID);
+        System.out.println("Movie rented ID: " + movieRentedID);
         System.out.println("Borrowed on: " + dateBorrowed.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
 
         if (dateReturned == null) {
@@ -66,17 +59,18 @@ public class Rental implements Payment {
     }
 
     public double calculate(String membership) {
+        double fee;
         int nights = getNightsRented();
         int extraNights = Math.max(0, nights - 7);
 
         if (membership.equalsIgnoreCase("student")) {
-            this.fee = 5 + (extraNights);
+            fee = 5 + (extraNights);
         }
         else
         {
-            this.fee = 10 + (extraNights * 2);
+            fee = 10 + (extraNights * 2);
         }
 
-        return this.fee;
+        return fee;
     }
 }
