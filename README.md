@@ -34,22 +34,11 @@ Dowload this project's ZIP file by clicking:
 
 ---
 
-## JSON
-Data is read and loaded when starting the application.
-When exiting system, data is saved into .json files and into a folder.
-
-Custom `LocalDateAdapter` is used to ensure `LocalDate` is written/read properly.
-
-```java
-private static final Gson gson = new GsonBuilder()
-        .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-        .setPrettyPrinting()
-        .create();
-
-```
-
----
-
 ## NOTICE
 * JavaDoc can be found in the code.
 * GUI coming soon!
+
+---
+
+## AUTHOR
+Joeffrey Briones
