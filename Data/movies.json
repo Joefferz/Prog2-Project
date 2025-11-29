@@ -1,0 +1,22 @@
+[
+  {
+    "movieID": "MV1",
+    "movieName": "Home Alone 2: Lost in New York",
+    "rentable": false
+  },
+  {
+    "movieID": "MV2",
+    "movieName": "The Grinch",
+    "rentable": false
+  },
+  {
+    "movieID": "MV3",
+    "movieName": "Despicable Me",
+    "rentable": true
+  },
+  {
+    "movieID": "MV4",
+    "movieName": "The Lion King",
+    "rentable": true
+  }
+]

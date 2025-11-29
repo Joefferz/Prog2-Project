@@ -1,0 +1,12 @@
+[
+  {
+    "customerRenterID": "ST1",
+    "movieRentedID": "MV1",
+    "dateBorrowed": "2025-11-29"
+  },
+  {
+    "customerRenterID": "EX1",
+    "movieRentedID": "MV2",
+    "dateBorrowed": "2025-11-29"
+  }
+]
