@@ -9,13 +9,28 @@
     import com.google.gson.stream.JsonReader;
     import com.google.gson.stream.JsonWriter;
 
+    /**
+     * Main driver class for the Movie Rental System.
+     * <p>
+     * This class loads data, displays the menu, handles user input,
+     * and controls the program such as adding members, adding movies,
+     * starting rentals, and processing returns.
+     */
     public class Main {
 
+        // Gson instance configured to handle LocalDate and pretty-print JSON files
         private static final Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .setPrettyPrinting()
                 .create();
 
+        /**
+         * Entry point of the Movie Rental System application.
+         * Initializes storage, loads data from JSON files,
+         * and runs the main menu loop.
+         *
+         * @param args command-line arguments (not used)
+         */
         public static void main(String[] args) {
             Scanner input = new Scanner(System.in);
 

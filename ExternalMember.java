@@ -1,14 +1,15 @@
 /**
  * Represents an external member customer.
  * An external member has additional information such as job and organization name.
- * Inherits properties from the Person class.
+ *
+ * <p>This class inherits the {@link Person} abstract class.</p>
  */
 public class ExternalMember extends Person {
     private String job;
     private String organization;
 
     /**
-     * Constructs a Student object with the given personal and academic details.
+     * Constructs an ExternalMember object with the given personal and academic details.
      *
      * @param name          the member's name (inherited)
      * @param customerID    the member's unique customer ID (inherited)

@@ -1,7 +1,8 @@
 /**
  * Represents a student customer.
  * A student has additional information such as school name and grade.
- * Inherits properties from the Person class.
+ *
+ * <p>This class inherits the {@link Person} abstract class.</p>
  */
 public class Student extends Person {
     private String schoolName;
