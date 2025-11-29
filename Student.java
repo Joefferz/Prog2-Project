@@ -1,7 +1,4 @@
 public class Student extends Person {
-    private String name;
-    private String customerID;
-    private String membership;
     private String schoolName;
     private int grade;
 
@@ -27,11 +24,11 @@ public class Student extends Person {
     }
 
     public String getSchoolName() {
-        return schoolName;
+        return this.schoolName;
     }
 
     public int getGrade() {
-        return grade;
+        return this.grade;
     }
 
     public String toString(){
@@ -39,6 +36,6 @@ public class Student extends Person {
     }
 
     public void personalInfo(){
-        System.out.println("School Name: " + schoolName + "\nGrade: " + grade);
+        System.out.println("School Name: " + getSchoolName() + "\nGrade: " + getGrade());
     }
 }

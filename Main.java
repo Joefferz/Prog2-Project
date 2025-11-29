@@ -1,564 +1,443 @@
-import java.util.*;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.io.*;
+    import java.lang.reflect.Type;
+    import java.util.*;
+    import java.time.*;
+    import java.time.format.DateTimeFormatter;
+    import java.io.*;
+    import com.google.gson.*;
+    import com.google.gson.reflect.TypeToken;
+    import com.google.gson.TypeAdapter;
+    import com.google.gson.stream.JsonReader;
+    import com.google.gson.stream.JsonWriter;
 
-public class Main {
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
+    public class Main {
 
-        ArrayList<Student> st = new ArrayList<>();
-        ArrayList<ExternalMember> em = new ArrayList<>();
-        ArrayList<Movie> mov = new ArrayList<>();
-        ArrayList<Rental> r = new ArrayList<>();
+        private static final Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .setPrettyPrinting()
+                .create();
 
-        File stFile = new File("Prog2Project-master\\Data\\Students.txt");
-        File exFile = new File("Prog2Project-master\\Data\\ExternalMembers.txt");
-        File movFile = new File("Prog2Project-master\\Data\\Movies.txt");
-        File rentalFile = new File("Prog2Project-master\\Data\\Rentals.txt");
+        public static void main(String[] args) {
+            Scanner input = new Scanner(System.in);
 
-        boolean flag = true;
+            // Single members list (Students + ExternalMembers)
+            ArrayList<Person> members = loadList("members.json",
+                    new TypeToken<ArrayList<Person>>(){}.getType());
 
-        while (flag) {
-            System.out.println("--------------------");
-            System.out.println("MOVIE RENTAL SYSTEM");
-            System.out.println("--------------------");
-            System.out.println("1. Add new member");
-            System.out.println("2. Add new movie");
-            System.out.println("3. Display students");
-            System.out.println("4. Display external members");
-            System.out.println("5. Display movies");
-            System.out.println("6. Start a rental");
-            System.out.println("7. Start a return");
-            System.out.println("8. Exit");
-            System.out.println("--------------------");
+            if (members.isEmpty()) {
+                members.add(new Student("Joeffrey", "ST1", "Student", "Vanier", 90));
+                members.add(new Student("Thomas", "ST2", "Student", "Vanier", 90));
+                members.add(new ExternalMember("Charles", "EX1", "External", "Engineer", "TechCorp"));
+                members.add(new ExternalMember("Danush", "EX2", "External", "Doctor", "HealthCareInc"));
+            }
 
-            System.out.print("What would you like to do? (Enter your choice): ");
-            int choice = input.nextInt();
+            ArrayList<Movie> movies = loadList("movies.json",
+                    new TypeToken<ArrayList<Movie>>(){}.getType());
 
-            switch (choice) {
+            if (movies.isEmpty()) {
+                movies.add(new Movie("MV1", "Home Alone 2: Lost in New York"));
+                movies.add(new Movie("MV2", "The Grinch"));
+                movies.add(new Movie("MV3", "Despicable Me"));
+                movies.add(new Movie("MV4", "The Lion King"));
+            }
 
-                case 1: //Adding a new member, 'Student' or 'External'
-                    System.out.println("--- ADD A NEW MEMBER ---");
-                    boolean memCheck = false;
-                    input.nextLine();
+            ArrayList<Rental> rentals = loadList("rentals.json",
+                    new TypeToken<ArrayList<Rental>>(){}.getType());
 
-                    //Checking valid membership
-                    while (!memCheck) {
-                        System.out.print("Select a membership (Enter 'Student' or 'External'): ");
-                        String membership = input.nextLine();
+            boolean flag = true;
 
-                        try {
-                            if (membership.equalsIgnoreCase("student")) {
+            while (flag) {
+                System.out.println("--------------------");
+                System.out.println("MOVIE RENTAL SYSTEM");
+                System.out.println("--------------------");
+                System.out.println("1. Add new member");
+                System.out.println("2. Add new movie");
+                System.out.println("3. Display students");
+                System.out.println("4. Display external members");
+                System.out.println("5. Display movies");
+                System.out.println("6. Start a rental");
+                System.out.println("7. Start a return");
+                System.out.println("8. Exit");
+                System.out.println("--------------------");
 
-                                //Checking student ID
-                                boolean studentIDCheck = false;
-                                String studentID = null;
+                int choice;
 
-                                while (!studentIDCheck) {
-                                    System.out.print("Enter student's customer ID (e.g., ST1, ST12, ST123): ");
-                                    studentID = input.nextLine().toUpperCase();
-
-                                    //ST followed by 1 to 3 digits
-                                    if (studentID.matches("ST\\d{1,3}")) {
-
-                                        //Check for duplicate ID
-                                        boolean dupeSTIDCheck = false;
-
-                                        for (Student s : st) {
-                                            if (s.getCustomerID().equalsIgnoreCase(studentID)) {
-                                                dupeSTIDCheck = true;
-                                                break;
-                                            }
-                                        }
-
-                                        if (dupeSTIDCheck) {
-                                            System.out.println("Student ID already exists.");
-                                        }
-                                        else {
-                                            studentIDCheck = true;
-                                        }
-                                    }
-                                    else {
-                                        throw new Exception("Invalid ID. Must start with 'ST' and have 1-3 digits (max 5 chars).");
-                                    }
-                                }
-
-                                System.out.print("Enter student's name: ");
-                                String studentName = input.nextLine();
-
-                                System.out.print("Enter student's school name: ");
-                                String schoolName = input.nextLine();
-
-                                System.out.print("Enter student's grade: ");
-                                int grade = input.nextInt();
-                                input.nextLine();
-
-                                Student stu = new Student(studentName, studentID, membership, schoolName, grade);
-                                st.add(stu);
-
-                                System.out.println("--------------------");
-                                System.out.println("Customer successfully added.\n");
-                                memCheck = true;
-
-                            } else if (membership.equalsIgnoreCase("external")) {
-
-                                //Checking external member ID
-                                boolean memberIDCheck = false;
-                                String externalID = null;
-
-                                while (!memberIDCheck) {
-                                    System.out.print("Enter member's customer ID (e.g., EX1, EX12, EX123): ");
-                                    externalID = input.nextLine().toUpperCase();
-
-                                    //EX followed by 1 to 3 digits
-                                    if (externalID.matches("EX\\d{1,3}")) {
-
-                                        //Check for duplicate ID
-                                        boolean dupeEXIDCheck = false;
-
-                                        for (ExternalMember ex : em) {
-                                            if (ex.getCustomerID().equalsIgnoreCase(externalID)) {
-                                                dupeEXIDCheck = true;
-                                                break;
-                                            }
-                                        }
-
-                                        if (dupeEXIDCheck) {
-                                            System.out.println("Member ID already exists.");
-                                        }
-                                        else {
-                                            memberIDCheck = true;
-                                        }
-                                    }
-                                    else {
-                                        throw new Exception("Invalid ID. Must start with 'EX' and have 1-3 digits (max 5 chars).");
-                                    }
-                                }
-
-                                System.out.print("Enter member's name: ");
-                                String externalName = input.nextLine();
-
-                                System.out.print("Enter member's job: ");
-                                String job = input.nextLine();
-
-                                System.out.print("Enter member's organization name: ");
-                                String organization = input.nextLine();
-
-                                ExternalMember exMem = new ExternalMember(externalName, externalID, membership, job, organization);
-                                em.add(exMem);
-
-                                System.out.println("--------------------");
-                                System.out.println("Customer successfully added.\n");
-                                memCheck = true;
-                            }
-                            else {
-                                System.out.println("Invalid membership. Please try again.");
-                            }
-                        }
-                        catch (InputMismatchException e) {
-                            System.out.println("Invalid input. Please try again");
-                            input.nextLine();
-                        }
-                        catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
+                while (true) {
+                    System.out.print("Enter your choice (1-8): ");
+                    try {
+                        choice = input.nextInt();
+                        break;
+                    } catch (InputMismatchException e) {
+                        System.out.println("Please enter a valid number (1-8).");
+                        input.nextLine();
                     }
-                    break;
+                }
 
-                case 2: //Adding a new movie
-                    System.out.println("--- ADD A NEW MOVIE ---");
-                    boolean movCheck = false;
-                    input.nextLine();
+                switch (choice) {
 
-                    while (!movCheck) {
-                        try {
+                    case 1: // Add new member
+                        addMember(input, members);
+                        break;
 
-                            //Check for duplicate movie name
-                            boolean movieNameCheck = false;
-                            String movieName = null;
-                            while (!movieNameCheck) {
-                                System.out.print("Enter movie name: ");
-                                movieName = input.nextLine();
+                    case 2: // Add new movie
+                        addMovie(input, movies);
+                        break;
 
-                                boolean dupeNameCheck = false;
-                                for (Movie m : mov) {
-                                    if (m.getMovieName().equalsIgnoreCase(movieName)) {
-                                        dupeNameCheck = true;
-                                        break;
-                                    }
-                                }
+                    case 3: // Display students
+                        displayMembersByType(members, "Student", input);
+                        break;
 
-                                if (dupeNameCheck) {
-                                    System.out.println("Movie already exists.");
-                                }
-                                else {
-                                    movieNameCheck = true;
-                                }
-                            }
+                    case 4: // Display external members
+                        displayMembersByType(members, "External", input);
+                        break;
 
-                            boolean movieIDCheck = false;
-                            String movieID = null;
-
-                            //Checking movie ID
-                            while (!movieIDCheck) {
-                                System.out.print("Enter movie's ID (e.g., MV1, MV12, MV123): ");
-                                movieID = input.nextLine().toUpperCase();
-
-                                //MV followed by 1 to 3 digits
-                                if (movieID.matches("MV\\d{1,3}")) {
-
-                                    //Check for duplicate ID
-                                    boolean dupeMVIDCheck = false;
-
-                                    for (Movie mv : mov) {
-                                        if (mv.getMovieID().equalsIgnoreCase(movieID)) {
-                                            dupeMVIDCheck = true;
-                                            break;
-                                        }
-                                    }
-
-                                    if (dupeMVIDCheck) {
-                                        System.out.println("Movie ID already exists.");
-                                    }
-                                    else {
-                                        movieIDCheck = true;
-                                    }
-                                } else {
-                                    throw new Exception("Invalid ID. Must start with 'MV' and have 1-3 digits (max 5 chars).");
-                                }
-                            }
-
-                            Movie movie = new Movie(movieID, movieName);
-                            mov.add(movie);
-
+                    case 5: // Display movies
+                        System.out.println("--- MOVIE LIST ---");
+                        for (Movie m : movies){
+                            m.show();
                             System.out.println("--------------------");
-                            System.out.println("Movie successfully added.\n");
-                            movCheck = true;
                         }
-                        catch (InputMismatchException e) {
-                            System.out.println("Invalid input. Please try again");
-                            input.nextLine();
-                        }
-                        catch (Exception e) {
-                            System.out.println("Error: " + e.getMessage());
-                        }
-                    }
-                    break;
-
-                case 3: //Listing all students
-                    System.out.println("--- STUDENT LIST ---");
-
-                    if(st.isEmpty()) {
-                        System.out.println("\nNo list of students found.");
                         break;
-                    }
-                    else {
-                        for (Student s : st) {
-                            System.out.println(s.toString());
-                        }
-                    }
 
-                    System.out.print("\nWould you like to view a student's personal info?(yes/no): ");
-                    String studentPINFO = input.next();
-
-                    if(studentPINFO.equalsIgnoreCase("yes")) {
-                        System.out.print("Enter student's id: ");
-                        String stID = input.next();
-
-                        for(Student s: st) {
-                            if(s.getCustomerID().equalsIgnoreCase(stID)) {
-                                s.personalInfo();
-                            }
-                        }
-                    }
-                    else if(studentPINFO.equalsIgnoreCase("no")) {
+                    case 6: // Start rental
+                        startRental(input, members, movies, rentals);
                         break;
-                    }
-                    else {
-                        System.out.println("Invalid input");
-                    }
-                    break;
 
-                case 4: //Listing all external members
-                    System.out.println("--- MEMBER LIST ---");
-
-                    if(em.isEmpty()) {
-                        System.out.println("No list of external members found.");
+                    case 7: // Start return
+                        startReturn(input, members, movies, rentals);
                         break;
-                    }
-                    else {
-                        for (ExternalMember ext : em) {
-                            System.out.println(ext.toString());
-                        }
-                    }
 
-                    System.out.print("\nWould you like to view a member's personal info?(yes/no): ");
-                    String externalPINFO = input.next();
-
-                    if(externalPINFO.equalsIgnoreCase("yes")) {
-                        System.out.print("Enter member's id: ");
-                        String extID = input.next();
-
-                        for(ExternalMember ext: em) {
-                            if(ext.getCustomerID().equalsIgnoreCase(extID)) {
-                                ext.personalInfo();
-                            }
-                        }
-                    }
-                    else if(externalPINFO.equalsIgnoreCase("no")) {
+                    case 8: // Exit and save
+                        saveList("members.json", members);
+                        saveList("movies.json", movies);
+                        saveList("rentals.json", rentals);
+                        System.out.println("Data saved. Exiting...");
+                        flag = false;
                         break;
-                    }
-                    else {
-                        System.out.println("Invalid input");
-                    }
-                    break;
 
-                case 5: //Listing all movies
-                    System.out.println("--- MOVIE LIST ---");
-                    for(Movie m : mov) {
-                        m.show();
-                    }
-                    break;
+                    default:
+                        System.out.println("Invalid choice. Try again.");
+                        break;
+                }
+            }
+        }
 
-                case 6: //Starting a customer's movie rental
-                    System.out.println("--------------------");
-                    System.out.println("START A CUSTOMER'S RENTAL:\n");
+        //MEMBER METHODS
+        private static void addMember(Scanner input, ArrayList<Person> members) {
+            System.out.println("--- ADD A NEW MEMBER ---");
+            boolean memCheck = false;
+            input.nextLine();
 
-                    input.nextLine();
+            while (!memCheck) {
+                System.out.print("Select membership (Student/External): ");
+                String membership = input.nextLine();
 
-                    try {
-                        //Show members
-                        if (st.isEmpty() && em.isEmpty()) {
-                            throw new Exception("No members available.");
+                try {
+                    if (membership.equalsIgnoreCase("Student")) {
+                        System.out.print("Enter student's customer ID (ST1-ST999): ");
+                        String studentID = input.nextLine().toUpperCase();
+
+                        if (!studentID.matches("ST\\d{1,3}"))
+                            throw new Exception("Invalid ID. Must start with 'ST' and 1-3 digits.");
+
+                        for (Person p : members) {
+                            if (p.getCustomerID().equalsIgnoreCase(studentID))
+                                throw new MemberAlreadyExistsException("Student ID already exists: " + studentID);
                         }
 
-                        System.out.println("List of all members:");
-                        System.out.println("--- Students ---");
-                        for (Student stu : st) System.out.println(stu);
+                        System.out.print("Enter student's name: ");
+                        String studentName = input.nextLine();
 
-                        System.out.println("--- External Members ---");
-                        for (ExternalMember ext : em) System.out.println(ext);
+                        System.out.print("Enter school name: ");
+                        String schoolName = input.nextLine();
 
-                        //Enter customer ID
-                        System.out.print("Enter customer's ID: ");
-                        String cRentID = input.nextLine().trim();
-
-                        findCustomer(st, em, cRentID); //throws exception if missing
-
-                        //List available movies
-                        System.out.println("\n--- Available Movies ---");
-                        ArrayList<Movie> availableMovies = new ArrayList<>();
-                        for (Movie m : mov) {
-                            if (m.isRentable().equalsIgnoreCase("Available")) {
-                                m.show();
-                                availableMovies.add(m);
-                            }
-                        }
-
-                        if (availableMovies.isEmpty()) {
-                            throw new Exception("No movies available to rent.");
-                        }
-
-                        //Enter movie ID
-                        System.out.print("Enter movie ID: ");
-                        String movRentID = input.nextLine().trim();
-
-                        Movie selected = getMovie(availableMovies, movRentID, true);
-
-                        //Preventing renting same movie multiple times
-                        for (Rental rent : r) {
-                            if (rent.getCustomerRenterID().equalsIgnoreCase(cRentID) &&
-                                    rent.getMovieRentedID().equalsIgnoreCase(movRentID) &&
-                                    rent.getDateReturned() == null) {
-                                throw new Exception("This customer has already rented this movie and has not returned it yet.");
-                            }
-                        }
-
-                        //Create rental
-                        LocalDate rentDate = LocalDate.now();
-                        Rental newRent = new Rental(cRentID, selected.getMovieID(), rentDate);
-
-                        r.add(newRent);
-                        selected.updateAvailability();
-
-                        System.out.println("\nRental successfully created:");
-                        newRent.details();
-
-                    } catch (Exception e) {
-                        System.out.println("Error: " + e.getMessage());
-                    }
-
-                    break;
-
-                case 7: //Starting a customer's return
-                    System.out.println("--------------------");
-                    System.out.println("START A CUSTOMER'S RETURN:");
-
-                    try {
+                        System.out.print("Enter grade: ");
+                        int grade = input.nextInt();
                         input.nextLine();
 
-                        //List all rentals
-                        if (r.isEmpty()) {
-                            throw new Exception("No rentals available.");
+                        members.add(new Student(studentName, studentID, membership, schoolName, grade));
+                        System.out.println("Student added successfully.");
+                        memCheck = true;
+
+                    } else if (membership.equalsIgnoreCase("External")) {
+                        System.out.print("Enter member's customer ID (EX1-EX999): ");
+                        String externalID = input.nextLine().toUpperCase();
+
+                        if (!externalID.matches("EX\\d{1,3}"))
+                            throw new Exception("Invalid ID. Must start with 'EX' and 1-3 digits.");
+
+                        for (Person p : members) {
+                            if (p.getCustomerID().equalsIgnoreCase(externalID))
+                                throw new MemberAlreadyExistsException("Member ID already exists: " + externalID);
                         }
 
-                        System.out.println("\n--- All Rentals ---");
-                        for (Rental rent : r) {
-                            rent.details();
-                        }
+                        System.out.print("Enter member's name: ");
+                        String externalName = input.nextLine();
 
-                        //Enter customer ID
-                        System.out.print("Enter customer's ID: ");
-                        String cReturnID = input.nextLine().trim();
+                        System.out.print("Enter job: ");
+                        String job = input.nextLine();
 
-                        findCustomer(st, em, cReturnID);
+                        System.out.print("Enter organization: ");
+                        String organization = input.nextLine();
 
-                        ArrayList<Rental> customerRentals = new ArrayList<>();
-                        for (Rental rent : r) {
-                            if (rent.getCustomerRenterID().equalsIgnoreCase(cReturnID)) {
-                                customerRentals.add(rent);
-                            }
-                        }
+                        members.add(new ExternalMember(externalName, externalID, membership, job, organization));
+                        System.out.println("External member added successfully.");
+                        memCheck = true;
 
-                        if (customerRentals.isEmpty()) throw new Exception("This customer has no rentals.");
-
-                        //List customer's rentals
-                        System.out.println("\n--- Member's Rentals ---");
-                        for (Rental rent : customerRentals) {
-                                rent.fullDetails();
-                        }
-
-                        //Enter movie ID
-                        System.out.print("Enter movie ID to return: ");
-                        String movReturnID = input.nextLine().trim();
-
-                        //Look for rental
-                        Rental activeRental = null;
-                        Rental everRented = null;
-
-                        //Find rental object for this movie
-                        for (Rental rent : customerRentals) {
-                            if (rent.getMovieRentedID().equalsIgnoreCase(movReturnID)) {
-                                everRented = rent;
-                                if (rent.getDateReturned() == null) {
-                                    activeRental = rent; //current active rental
-                                }
-                            }
-                        }
-
-                        if (everRented == null) {
-                            throw new Exception("This customer NEVER rented this movie.");
-                        }
-
-                        if (activeRental == null) {
-                            throw new Exception("This rental has ALREADY been returned.");
-                        }
-
-                        //Find movie object
-                        Movie selected = getMovie(mov, movReturnID, false);
-
-                        System.out.println("Movie found. Proceeding with return.");
-
-                        //Return date
-                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-                        LocalDate returnDate;
-
-                        while (true) {
-                            try {
-                                System.out.print("Enter return date (MM/DD/YYYY): ");
-                                returnDate = LocalDate.parse(input.nextLine().trim(), dtf);
-
-                                if (!returnDate.isAfter(activeRental.getDateBorrowed())) {
-                                    System.out.println("Return date must be AFTER borrow date.");
-                                    continue;
-                                }
-
-                                break;
-                            }
-                            catch (Exception e) {
-                                System.out.println("Invalid return date. Try again.");
-                            }
-                        }
-
-                        //Finish the return
-                        activeRental.setDateReturned(returnDate);
-                        activeRental.fullDetails();
-
-                        System.out.println("Nights rented: " + activeRental.getNightsRented());
-
-                        //Calculate fee
-                        double finalFee = 0;
-                        for (Student s : st) {
-                            if (s.getCustomerID().equalsIgnoreCase(cReturnID)) {
-                                finalFee = activeRental.calculate(s.getMembership());
-                                break;
-                            }
-                        }
-                        for (ExternalMember e : em) {
-                            if (e.getCustomerID().equalsIgnoreCase(cReturnID)) {
-                                finalFee = activeRental.calculate(e.getMembership());
-                                break;
-                            }
-                        }
-
-                        System.out.printf("Fee: $%.2f%n", finalFee);
-
-                        //Make movie available again
-                        selected.updateAvailability();
-                        System.out.println("Movie successfully returned.");
-
-                    } catch (Exception e) {
-                        System.out.println("Error: " + e.getMessage());
+                    } else {
+                        System.out.println("Invalid membership. Try again.");
                     }
-                    break;
 
-                case 8: //Exiting the system
-                    System.out.println("Exiting system...");
-                    flag = false;
-                    break;
-
-                default: //Default response after invalid input
-                    System.out.println("Invalid choice. Please try again.");
-                    break;
-            }
-        }
-    }
-
-    private static Movie getMovie(ArrayList<Movie> mov, String movRentID, boolean forRental) throws Exception {
-        Movie selected = null;
-        for (Movie m : mov) {
-            if (m.getMovieID().equalsIgnoreCase(movRentID)) {
-                selected = m;
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
             }
         }
 
-        if (selected == null) {
-            throw new Exception("Invalid movie ID.");
-        }
+        private static void displayMembersByType(ArrayList<Person> members, String type, Scanner input) {
+            System.out.println("--- " + type.toUpperCase() + " LIST ---");
+            boolean found = false;
+            for (Person p : members) {
+                if (p.getMembership().equalsIgnoreCase(type)) {
+                    System.out.println(p.toString());
+                    System.out.println("--------------------");
+                    found = true;
+                }
+            }
+            if (!found) System.out.println("No " + type.toLowerCase() + " members found.");
 
-        if (forRental && !selected.isRentable().equalsIgnoreCase("Available")) {
-            throw new Exception("Movie is not available.");
-        }
-        return selected;
-    }
-
-    private static void findCustomer(ArrayList<Student> st, ArrayList<ExternalMember> em, String cReturnID) throws Exception {
-        boolean customerFound = false;
-
-        for (Student s : st) {
-            if (s.getCustomerID().equalsIgnoreCase(cReturnID)) {
-                customerFound = true;
+            System.out.print("\nView personal info? (yes/no): ");
+            String ans = input.next();
+            if (ans.equalsIgnoreCase("yes")) {
+                System.out.print("Enter ID: ");
+                String id = input.next();
+                for (Person p : members) {
+                    if (p.getCustomerID().equalsIgnoreCase(id)) p.personalInfo();
+                }
             }
         }
-        for (ExternalMember e : em) {
-            if (e.getCustomerID().equalsIgnoreCase(cReturnID)) {
-                customerFound = true;
+
+        // MOVIE METHODS
+        private static void addMovie(Scanner input, ArrayList<Movie> movies) {
+            System.out.println("--- ADD A NEW MOVIE ---");
+            boolean movCheck = false;
+            input.nextLine();
+
+            while (!movCheck) {
+                try {
+                    System.out.print("Enter movie name: ");
+                    String movieName = input.nextLine();
+
+                    System.out.print("Enter movie ID (MV1-MV999): ");
+                    String movieID = input.nextLine().toUpperCase();
+
+                    if (!movieID.matches("MV\\d{1,3}"))
+                        throw new Exception("Invalid ID. Must start with 'MV' and 1-3 digits.");
+
+                    for (Movie m : movies) {
+                        if (m.getMovieID().equalsIgnoreCase(movieID))
+                            throw new MovieAlreadyExistsException("Movie ID already exists: " + movieID);
+                    }
+
+                    movies.add(new Movie(movieID, movieName));
+                    System.out.println("Movie added successfully.");
+                    movCheck = true;
+
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
             }
         }
 
-        if (!customerFound) {
+        //RENTAL METHODS
+        private static void startRental(Scanner input, ArrayList<Person> members, ArrayList<Movie> movies, ArrayList<Rental> rentals) {
+            System.out.println("--------------------");
+            System.out.println("START A CUSTOMER'S RENTAL:\n");
+
+            input.nextLine();
+
+            try {
+                if (members.isEmpty()) throw new Exception("No members available.");
+
+                System.out.println("List of all members:");
+                for (Person p : members) {
+                    System.out.println(p.toString());
+                    System.out.println("--------------------");
+                }
+
+                System.out.print("Enter customer's ID: ");
+                String cRentID = input.nextLine().trim();
+
+                Person customer = findCustomer(members, cRentID);
+
+                System.out.println("\n--- Available Movies ---");
+                ArrayList<Movie> availableMovies = new ArrayList<>();
+                for (Movie m : movies) {
+                    if (m.isRentable().equalsIgnoreCase("Available")) {
+                        m.show();
+                        System.out.println("--------------------");
+                        availableMovies.add(m);
+                    }
+                }
+                if (availableMovies.isEmpty()) throw new Exception("No movies available to rent.");
+
+                System.out.print("Enter movie ID: ");
+                String movRentID = input.nextLine().trim();
+
+                Movie selected = getMovie(availableMovies, movRentID, true);
+
+                for (Rental rent : rentals) {
+                    if (rent.getCustomerRenterID().equalsIgnoreCase(cRentID) &&
+                            rent.getMovieRentedID().equalsIgnoreCase(movRentID) &&
+                            rent.getDateReturned() == null) {
+                        throw new Exception("This customer has already rented this movie and not returned it yet.");
+                    }
+                }
+
+                Rental newRent = new Rental(cRentID, selected.getMovieID(), LocalDate.now());
+                rentals.add(newRent);
+                selected.updateAvailability();
+
+                System.out.println("\nRental successfully created:");
+                newRent.details();
+
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+
+        private static void startReturn(Scanner input, ArrayList<Person> members, ArrayList<Movie> movies, ArrayList<Rental> rentals) {
+            System.out.println("--------------------");
+            System.out.println("START A CUSTOMER'S RETURN:");
+
+            input.nextLine();
+
+            try {
+                if (rentals.isEmpty()) throw new Exception("No rentals available.");
+
+                System.out.println("\n--- All Rentals ---");
+                for (Rental rent : rentals) rent.details();
+
+                System.out.print("Enter customer's ID: ");
+                String cReturnID = input.nextLine().trim();
+
+                Person customer = findCustomer(members, cReturnID);
+
+                ArrayList<Rental> customerRentals = new ArrayList<>();
+                for (Rental rent : rentals) {
+                    if (rent.getCustomerRenterID().equalsIgnoreCase(cReturnID)) customerRentals.add(rent);
+                }
+
+                if (customerRentals.isEmpty()) throw new Exception("This customer has no rentals.");
+
+                System.out.println("\n--- Member's Rentals ---");
+                for (Rental rent : customerRentals) {
+                    rent.fullDetails();
+                    System.out.println("--------------------");
+                }
+
+                System.out.print("Enter movie ID to return: ");
+                String movReturnID = input.nextLine().trim();
+
+                Rental activeRental = null, everRented = null;
+                for (Rental rent : customerRentals) {
+                    if (rent.getMovieRentedID().equalsIgnoreCase(movReturnID)) {
+                        everRented = rent;
+                        if (rent.getDateReturned() == null) activeRental = rent;
+                    }
+                }
+
+                if (everRented == null) throw new Exception("This customer NEVER rented this movie.");
+                if (activeRental == null) throw new Exception("This rental has ALREADY been returned.");
+
+                Movie selected = getMovie(movies, movReturnID, false);
+                System.out.println("Movie found. Proceeding with return.");
+
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                LocalDate returnDate;
+                while (true) {
+                    try {
+                        System.out.print("Enter return date (MM/DD/YYYY): ");
+                        returnDate = LocalDate.parse(input.nextLine().trim(), dtf);
+                        if (!returnDate.isAfter(activeRental.getDateBorrowed())) {
+                            System.out.println("Return date must be AFTER borrow date.");
+                            continue;
+                        }
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Invalid return date. Try again.");
+                    }
+                }
+
+                activeRental.setDateReturned(returnDate);
+                activeRental.fullDetails();
+                System.out.println("Nights rented: " + activeRental.getNightsRented());
+
+                double finalFee = activeRental.calculate(customer.getMembership());
+                System.out.printf("Fee: $%.2f%n", finalFee);
+
+                selected.updateAvailability();
+                System.out.println("Movie successfully returned.");
+
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+
+        //HELPER METHODS
+        private static Person findCustomer(ArrayList<Person> members, String customerID) throws Exception {
+            for (Person p : members) {
+                if (p.getCustomerID().equalsIgnoreCase(customerID)) return p;
+            }
             throw new Exception("Customer ID does not exist.");
         }
+
+        private static Movie getMovie(ArrayList<Movie> movies, String movID, boolean forRental)
+                throws Exception {
+            for (Movie m : movies) {
+                if (m.getMovieID().equalsIgnoreCase(movID)) {
+                    if (forRental && !m.isRentable().equalsIgnoreCase("Available"))
+                        throw new MovieUnavailableException("Movie is already borrowed.");
+                    return m;
+                }
+            }
+            throw new MovieNotFoundException("Movie not found: " + movID);
+        }
+
+        //LocalDate adapter
+        private static class LocalDateAdapter extends TypeAdapter<LocalDate> {
+
+            @Override
+            public void write(JsonWriter jsonWriter, LocalDate localDate) throws IOException {
+                if (localDate == null) {
+                    jsonWriter.nullValue();   // <-- IMPORTANT
+                    return;
+                }
+                jsonWriter.value(localDate.toString());
+            }
+
+            @Override
+            public LocalDate read(JsonReader jsonReader) throws IOException {
+                if (jsonReader.peek() == com.google.gson.stream.JsonToken.NULL) {
+                    jsonReader.nextNull();    // <-- IMPORTANT
+                    return null;
+                }
+                return LocalDate.parse(jsonReader.nextString());
+            }
+        }
+
+        private static <T> ArrayList<T> loadList(String path, Type type) {
+            try (FileReader reader = new FileReader(path)) {
+                return gson.fromJson(reader, type);
+            } catch (Exception e) {
+                return new ArrayList<>();
+            }
+        }
+
+        private static <T> void saveList(String path, ArrayList<T> list) {
+            try (FileWriter writer = new FileWriter(path)) {
+                gson.toJson(list, writer);
+            } catch (IOException e) {
+                System.out.println("Error saving: " + e.getMessage());
+            }
+        }
     }
-}

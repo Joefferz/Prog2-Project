@@ -1,7 +1,4 @@
 public class ExternalMember extends Person {
-    private String name;
-    private String customerID;
-    private String membership;
     private String job;
     private String organization;
 
@@ -27,11 +24,11 @@ public class ExternalMember extends Person {
     }
 
     public String getJob() {
-        return job;
+        return this.job;
     }
 
     public String getOrganization() {
-        return organization;
+        return this.organization;
     }
 
     public String toString(){
@@ -39,6 +36,6 @@ public class ExternalMember extends Person {
     }
 
     public void personalInfo(){
-        System.out.println("Job: " + job + "\nOrganization's name: " + organization);
+        System.out.println("Job: " + getJob() + "\nOrganization's name: " + getOrganization());
     }
 }

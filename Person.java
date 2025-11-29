@@ -10,20 +10,20 @@ abstract class Person {
     }
 
     public String toString() {
-        return "Name: " + name + "\nID: " + customerID + "\nMembership: " + membership;
+        return "Name: " + this.name + "\nID: " + this.customerID + "\nMembership: " + this.membership;
     }
 
     abstract void personalInfo();
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public String getCustomerID() {
-        return customerID;
+        return this.customerID;
     }
 
     public String getMembership() {
-        return membership;
+        return this.membership;
     }
 }

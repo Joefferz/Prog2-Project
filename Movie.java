@@ -10,15 +10,15 @@ public class Movie {
     }
 
     public String getMovieID() {
-        return movieID;
+        return this.movieID;
     }
 
     public String getMovieName() {
-        return movieName;
+        return this.movieName;
     }
 
     public String isRentable() {
-        return rentable ? "Available" : "Unavailable";
+        return this.rentable ? "Available" : "Unavailable";
     }
 
     public void updateAvailability(){
@@ -26,6 +26,6 @@ public class Movie {
     }
 
     public void show() {
-        System.out.println("Movie ID: " + movieID + "\nMovie Name: " + movieName + "\nStatus: " + isRentable());
+        System.out.println("Movie ID: " + getMovieID() + "\nMovie Name: " + getMovieName() + "\nStatus: " + isRentable());
     }
 }

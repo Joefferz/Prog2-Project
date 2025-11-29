@@ -21,7 +21,7 @@ public class Rental implements Payment {
     }
 
     public String getMovieRentedID() {
-        return movieRenterID;
+        return this.movieRenterID;
     }
 
     public void setDateReturned(LocalDate dateReturned) {
@@ -29,11 +29,11 @@ public class Rental implements Payment {
     }
 
     public LocalDate getDateBorrowed() {
-        return dateBorrowed;
+        return this.dateBorrowed;
     }
 
     public LocalDate getDateReturned() {
-        return dateReturned;
+        return this.dateReturned;
     }
 
     public int getNightsRented() {
