@@ -9,11 +9,11 @@ This project is a **Movie Rental Management System** built using **Object-Orient
 It allows users to:
 
 - Add new members (Students/External Member) 
-- Add movies  
+- Add movies
+- Display members and movies
 - Start rentals  
 - Return rentals  
-- Calculate rental fees  
-- Save and load data using **Gson JSON serialization** (with LocalDate support)
+- Calculate rental fees
 
 ---
 
