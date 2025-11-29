@@ -18,7 +18,8 @@ It allows users to:
 ---
 
 ## JSON
-Date is saved in *.json files and then loaded using **GSON**.
+Date is read and loaded when starting the application.
+When exiting system, data is saved into .json files and into a folder.
 
 Custom `LocalDateAdapter` is used to ensure `LocalDate` is written/read properly.
 
@@ -38,5 +39,8 @@ private static final Gson gson = new GsonBuilder()
 2. Add the Gson (2.10.1 or higher) library to your project
 3. Execute Main class/drive
 
+---
+
 ## NOTICE
-GUI coming soon!
+* JavaDoc can be found in the code.
+* GUI coming soon!
