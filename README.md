@@ -6,6 +6,7 @@ A Java console application for managing customers, movies, and rentals with JSON
 
 ## OVERVIEW
 This project is a **Movie Rental Management System** built using **Object-Oriented Programming (OOP)** principles in Java.  
+
 It allows users to:
 
 - Add new members (Students/External Member) 
