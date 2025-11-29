@@ -19,6 +19,11 @@
         public static void main(String[] args) {
             Scanner input = new Scanner(System.in);
 
+            File folder = new File("Data");
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+
             //Member (Students + ExternalMembers)
             ArrayList<Person> members = loadList("members.json",
                     new TypeToken<ArrayList<Person>>(){}.getType());
@@ -428,16 +433,22 @@
             }
         }
 
-        private static <T> ArrayList<T> loadList(String path, Type type) {
-            try (FileReader reader = new FileReader(path)) {
+        //Loading info from a file
+        private static <T> ArrayList<T> loadList(String fileName, Type type) {
+            File file = new File("Data", fileName);
+
+            try (FileReader reader = new FileReader(file)) {
                 return gson.fromJson(reader, type);
             } catch (Exception e) {
                 return new ArrayList<>();
             }
         }
 
-        private static <T> void saveList(String path, ArrayList<T> list) {
-            try (FileWriter writer = new FileWriter(path)) {
+        //Saving files into a folder
+        private static <T> void saveList(String fileName, ArrayList<T> list) {
+            File file = new File("Data", fileName);
+
+            try (FileWriter writer = new FileWriter(file)) {
                 gson.toJson(list, writer);
             } catch (IOException e) {
                 System.out.println("Error saving: " + e.getMessage());
