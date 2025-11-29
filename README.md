@@ -17,8 +17,25 @@ It allows users to:
 
 ---
 
+## REQUIREMENTS
+
+1. Install Java 8+
+2. Add the Gson (2.10.1 or higher) library to your project
+
+---
+
+## HOW TO RUN
+
+Dowload this project's ZIP file by clicking: 
+
+> <>Code --> Download ZIP
+>
+> Next, run project via src/Main.java
+
+---
+
 ## JSON
-Date is read and loaded when starting the application.
+Data is read and loaded when starting the application.
 When exiting system, data is saved into .json files and into a folder.
 
 Custom `LocalDateAdapter` is used to ensure `LocalDate` is written/read properly.
@@ -30,14 +47,6 @@ private static final Gson gson = new GsonBuilder()
         .create();
 
 ```
-
----
-
-## REQUIREMENTS
-
-1. Install Java 8+
-2. Add the Gson (2.10.1 or higher) library to your project
-3. Execute Main class/drive
 
 ---
 
