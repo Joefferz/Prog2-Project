@@ -44,7 +44,7 @@ and how to add gson 2.10.1 to your library
 ## NOTICE
 
 * You can check some preview images [here](https://github.com/Joefferz/Prog2-Project/tree/master/images)
-* JavaDoc can be found in the code.
+* JavaDoc can be found in the code. Or by clicking [here](https://github.com/Joefferz/Prog2-Project/blob/master/docs/overview-summary.html)
 * GUI coming soon!
 
 ---
