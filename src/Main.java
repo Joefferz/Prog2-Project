@@ -15,8 +15,8 @@
     import com.google.gson.stream.JsonWriter;
 
     /**
-     * Main driver class for the Movie Rental System.
-     * <p>
+     * Program entry point
+     *
      * This class loads data, displays the menu, handles user input,
      * and controls the program such as adding members, adding movies,
      * starting rentals, and processing returns.
@@ -474,4 +474,5 @@
                 System.out.println("Error saving: " + e.getMessage());
             }
         }
+
     }
