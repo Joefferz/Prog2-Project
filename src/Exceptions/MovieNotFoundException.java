@@ -1,8 +1,8 @@
 package Exceptions;
 
 /**
- * Exception thrown when attempting to rent a movie
- * that is currently unavailable (already rented out).
+ * Exception thrown when a movie with the specified ID
+ * cannot be found in the system.
  */
 public class MovieNotFoundException extends RuntimeException {
 
@@ -15,4 +15,5 @@ public class MovieNotFoundException extends RuntimeException {
         super(msg);
     }
 }
+
 
