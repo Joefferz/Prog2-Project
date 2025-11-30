@@ -9,10 +9,11 @@ public class MovieUnavailableException extends RuntimeException {
     /**
      * Constructs a new MovieUnavailableException with the specified detail message.
      *
-     * @param message the detail message explaining the exception
+     * @param msg the detail message explaining the exception
      */
     public MovieUnavailableException(String msg) {
         super(msg);
     }
 }
+
 
