@@ -43,7 +43,7 @@ and how to add gson 2.10.1 to your library
 
 ## NOTICE
 
-* You can check some preview images ![alt:images](https://github.com/Joefferz/Prog2-Project/tree/master/images)"here"
+* You can check some preview images [here](https://github.com/Joefferz/Prog2-Project/tree/master/images)
 * JavaDoc can be found in the code.
 * GUI coming soon!
 
