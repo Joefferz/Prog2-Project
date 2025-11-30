@@ -9,10 +9,11 @@ public class MovieAlreadyExistsException extends Exception {
     /**
      * Constructs a new MovieAlreadyExistsException with the specified detail message.
      *
-     * @param message the detail message explaining the exception
+     * @param msg the detail message explaining the exception
      */
     public MovieAlreadyExistsException(String msg) {
         super(msg);
     }
 
 }
+
