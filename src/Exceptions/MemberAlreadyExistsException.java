@@ -9,10 +9,11 @@ public class MemberAlreadyExistsException extends Exception {
     /**
      * Constructs a new MemberAlreadyExistsException with the specified detail message.
      *
-     * @param message the detail message explaining the exception
+     * @param msg the detail message explaining the exception
      */
     public MemberAlreadyExistsException(String msg) {
         super(msg);
     }
 
 }
+
