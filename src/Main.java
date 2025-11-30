@@ -15,7 +15,7 @@
     import com.google.gson.stream.JsonWriter;
 
     /**
-     * Program entry point
+     * Main driver class
      *
      * This class loads data, displays the menu, handles user input,
      * and controls the program such as adding members, adding movies,
@@ -30,7 +30,6 @@
                 .create();
 
         /**
-         * Entry point of the Movie Rental System application.
          * Initializes storage, loads data from JSON files,
          * and runs the main menu loop.
          *
@@ -476,3 +475,4 @@
         }
 
     }
+
