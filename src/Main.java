@@ -14,6 +14,14 @@
     import com.google.gson.stream.JsonReader;
     import com.google.gson.stream.JsonWriter;
 
+    import javafx.application.Application;
+    import javafx.fxml.FXML;
+    import javafx.fxml.FXMLLoader;
+    import javafx.scene.Parent;
+    import javafx.scene.Scene;
+    import javafx.stage.Stage;
+    import javafx.stage.StageStyle;
+
     /**
      * Main driver class
      *
@@ -21,13 +29,36 @@
      * and controls the program such as adding members, adding movies,
      * starting rentals, and processing returns.
      */
-    public class Main {
+    public class Main extends Application {
+
+        double x, y = 0;
+        @Override
+        public void start(Stage stage) throws IOException {
+            Parent root = FXMLLoader.load(getClass().getResource("MovieRental.fxml"));
+            Scene scene = new Scene(root, 800, 500);
+            stage.initStyle(StageStyle.UNDECORATED);
+
+            root.setOnMousePressed(event -> {
+                x = event.getSceneX();
+                y = event.getSceneY();
+            });
+
+            root.setOnMouseDragged(event -> {
+                stage.setX(event.getScreenX() - x);
+                stage.setY(event.getScreenY() - y);
+            });
+
+            scene.getStylesheets().add(getClass().getResource("Sidebar-Buttons.css").toExternalForm());
+
+            stage.setScene(scene);
+            stage.show();
+        }
 
         // Gson instance configured to handle LocalDate and pretty-print JSON files
-        private static final Gson gson = new GsonBuilder()
+        /*private static final Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .setPrettyPrinting()
-                .create();
+                .create();*/
 
         /**
          * Initializes storage, loads data from JSON files,
@@ -36,7 +67,9 @@
          * @param args command-line arguments (not used)
          */
         public static void main(String[] args) {
-            Scanner input = new Scanner(System.in);
+            launch(args);
+
+            /*Scanner input = new Scanner(System.in);
 
             File folder = new File("Data");
             if (!folder.exists()) {
@@ -143,10 +176,10 @@
                         break;
                 }
             }
-        }
+        }*/
 
-        //MEMBER METHODS
-        private static void addMember(Scanner input, ArrayList<Person> members) {
+            //MEMBER METHODS
+        /*private static void addMember(Scanner input, ArrayList<Person> members) {
             System.out.println("--- ADD A NEW MEMBER ---");
             boolean memCheck = false;
             input.nextLine();
@@ -471,8 +504,7 @@
                 gson.toJson(list, writer);
             } catch (IOException e) {
                 System.out.println("Error saving: " + e.getMessage());
-            }
+            }*/
+
         }
-
     }
-
