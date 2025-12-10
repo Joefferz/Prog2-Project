@@ -60,7 +60,7 @@
               <columns>
                 <TableColumn fx:id="mvID" prefWidth="75.0" text="ID" />
                 <TableColumn fx:id="mvName" prefWidth="434.0" text="NAME" />
-                  <TableColumn prefWidth="123.0" text="STATUS" />
+                  <TableColumn fx:id="mvStatus" prefWidth="123.0" text="STATUS" />
               </columns>
             </TableView>
             <TextArea fx:id="movieInfo" layoutX="41.0" layoutY="386.0" prefHeight="45.0" prefWidth="200.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
@@ -76,9 +76,11 @@
          <children>
             <TableView fx:id="MemberList" layoutX="40.0" layoutY="107.0" prefHeight="254.0" prefWidth="634.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
                <columns>
-                  <TableColumn prefWidth="75.0" text="ID" />
-                  <TableColumn prefWidth="434.0" text="NAME" />
-                  <TableColumn prefWidth="123.0" text="STATUS" />
+                  <TableColumn fx:id="memID" prefWidth="49.0" text="ID" />
+                  <TableColumn fx:id="memName" prefWidth="164.0" text="NAME" />
+                  <TableColumn fx:id="memMembership" prefWidth="123.0" text="MEMBERSHIP" />
+                  <TableColumn fx:id="info1" prefWidth="149.0" text="INFO 1" />
+                  <TableColumn fx:id="info2" prefWidth="148.0" text="INFO 2" />
                </columns>
             </TableView>
             <TextArea fx:id="memInfo" layoutX="41.0" layoutY="386.0" prefHeight="45.0" prefWidth="200.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
@@ -100,9 +102,10 @@
          <children>
             <TableView fx:id="rentList" layoutX="40.0" layoutY="107.0" prefHeight="254.0" prefWidth="634.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
                <columns>
-                  <TableColumn prefWidth="75.0" text="ID" />
-                  <TableColumn prefWidth="434.0" text="NAME" />
-                  <TableColumn prefWidth="123.0" text="STATUS" />
+                  <TableColumn fx:id="mvRTID" prefWidth="89.0" text="MOVIE ID" />
+                  <TableColumn fx:id="mbrRTID" prefWidth="146.0" text="RENTED BY" />
+                  <TableColumn fx:id="rtBorrow" prefWidth="205.0" text="BORROW DATE" />
+                  <TableColumn fx:id="rtReturn" prefWidth="193.0" text="RETURN DATE" />
                </columns>
             </TableView>
             <TextArea fx:id="rentInfo" layoutX="41.0" layoutY="386.0" prefHeight="45.0" prefWidth="200.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
@@ -116,11 +119,12 @@
       </AnchorPane>
       <AnchorPane fx:id="ReturnMovie" layoutX="87.0" layoutY="44.0" prefHeight="456.0" prefWidth="714.0" visible="false">
          <children>
-            <TableView fx:id="returnList" layoutX="40.0" layoutY="107.0" prefHeight="254.0" prefWidth="634.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
+            <TableView fx:id="returnList" layoutX="40.0" layoutY="107.0" prefHeight="254.0" prefWidth="634.0">
                <columns>
-                  <TableColumn prefWidth="75.0" text="ID" />
-                  <TableColumn prefWidth="434.0" text="NAME" />
-                  <TableColumn prefWidth="123.0" text="STATUS" />
+                  <TableColumn fx:id="mvRTNID" prefWidth="89.0" text="MOVIE ID" />
+                  <TableColumn fx:id="mbrRTNID" prefWidth="146.0" text="RENTED BY" />
+                  <TableColumn fx:id="rtnBorrow" prefWidth="205.0" text="BORROW DATE" />
+                  <TableColumn fx:id="rtnReturn" prefWidth="193.0" text="RETURN DATE" />
                </columns>
             </TableView>
             <TextArea fx:id="returnInfo" layoutX="41.0" layoutY="386.0" prefHeight="45.0" prefWidth="200.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
