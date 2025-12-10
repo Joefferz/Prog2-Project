@@ -2,17 +2,4 @@
   {
     "customerRenterID": "ST1",
     "movieRentedID": "MV1",
-    "dateBorrowed": "2025-11-29"
-  },
-  {
-    "customerRenterID": "EX1",
-    "movieRentedID": "MV2",
-    "dateBorrowed": "2025-11-29"
-  },
-  {
-    "customerRenterID": "ST5",
-    "movieRentedID": "MV5",
-    "dateBorrowed": "2025-11-29",
-    "dateReturned": "2025-12-10"
-  }
-]
+    "dateBorrowed": "2025-12-07"

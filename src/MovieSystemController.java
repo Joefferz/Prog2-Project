@@ -1,3 +1,7 @@
+import Exceptions.MemberAlreadyExistsException;
+import Exceptions.MovieAlreadyExistsException;
+import Exceptions.MovieNotFoundException;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -13,6 +17,7 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import javafx.util.Duration;
 
 public class MovieSystemController {
 
@@ -37,11 +42,19 @@ public class MovieSystemController {
 
     // Rent
     @FXML private TableView<Rental> rentList;
+    @FXML private TableColumn<Rental, String> mvRTID;
+    @FXML private TableColumn<Rental, String> mbrRTID;
+    @FXML private TableColumn<Rental, LocalDate> rtBorrow;
+    @FXML private TableColumn<Rental, LocalDate> rtReturn;
     @FXML private TextField rentMovID, rentMemID;
     @FXML private TextArea rentInfo;
 
     // Return
     @FXML private TableView<Rental> returnList;
+    @FXML private TableColumn<Rental, String> mvRTNID;
+    @FXML private TableColumn<Rental, String> mbrRTNID;
+    @FXML private TableColumn<Rental, LocalDate> rtnBorrow;
+    @FXML private TableColumn<Rental, LocalDate> rtnReturn;
     @FXML private TextField returnMovID, returnMemID;
     @FXML private DatePicker returnDate;
     @FXML private TextArea returnInfo;
@@ -75,6 +88,13 @@ public class MovieSystemController {
         MovieList.getItems().setAll(movies);
 
         // Members Table
+        if (members.isEmpty()) {
+            members.add(new Student("Joeffrey", "ST1", "Student", "Vanier", "90"));
+            members.add(new Student("Thomas", "ST2", "Student", "Vanier", "75"));
+            members.add(new ExternalMember("Charles", "EX1", "External", "Engineer", "TechCorp"));
+            members.add(new ExternalMember("Danush", "EX2", "External", "Doctor", "HealthCareInc"));
+        }
+
         memID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         memName.setCellValueFactory(new PropertyValueFactory<>("name"));
         memMembership.setCellValueFactory(new PropertyValueFactory<>("membership"));
@@ -83,7 +103,24 @@ public class MovieSystemController {
 
         MemberList.getItems().setAll(members);
 
-        // Rental Table
+        // Rental Tables
+        // Rent table column setup
+        mvRTID.setCellValueFactory(new PropertyValueFactory<>("movieRentedID"));
+        mbrRTID.setCellValueFactory(new PropertyValueFactory<>("customerRenterID"));
+        rtBorrow.setCellValueFactory(new PropertyValueFactory<>("dateBorrowed"));
+        rtReturn.setCellValueFactory(new PropertyValueFactory<>("dateReturned"));
+
+        // Return table column setup
+        mvRTNID.setCellValueFactory(new PropertyValueFactory<>("movieRentedID"));
+        mbrRTNID.setCellValueFactory(new PropertyValueFactory<>("customerRenterID"));
+        rtnBorrow.setCellValueFactory(new PropertyValueFactory<>("dateBorrowed"));
+        rtnReturn.setCellValueFactory(new PropertyValueFactory<>("dateReturned"));
+
+        if (rentals.isEmpty()) {
+            rentals.add(new Rental("ST1", "MV1", LocalDate.now().minusDays(3)));
+            rentals.add(new Rental("EX1", "MV6", LocalDate.now().minusDays(1)));
+        }
+
         rentList.getItems().setAll(rentals);
         returnList.getItems().setAll(rentals);
     }
@@ -133,7 +170,7 @@ public class MovieSystemController {
 
             for (Movie m : movies) {
                 if (m.getMovieID().equalsIgnoreCase(id))
-                    throw new Exception("Movie ID already exists.");
+                    throw new MovieAlreadyExistsException("Movie ID already exists.");
             }
 
             Movie m = new Movie(id, name);
@@ -162,12 +199,12 @@ public class MovieSystemController {
 
             for (Person p : members) {
                 if (p.getCustomerID().equalsIgnoreCase(id))
-                    throw new Exception("Member ID already exists.");
+                    throw new MemberAlreadyExistsException("Member ID already exists.");
             }
 
             Person p;
             if (mem.equalsIgnoreCase("Student")) {
-                p = new Student(name, id, mem, infoA, Integer.parseInt(infoB));
+                p = new Student(name, id, mem, infoA, infoB);
             } else if (mem.equalsIgnoreCase("External")) {
                 p = new ExternalMember(name, id, mem, infoA, infoB);
             } else {
@@ -223,6 +260,7 @@ public class MovieSystemController {
             if (date == null)
                 throw new Exception("Select a return date.");
 
+            // Find active rental
             Rental active = null;
             for (Rental r : rentals) {
                 if (r.getCustomerRenterID().equalsIgnoreCase(cid) &&
@@ -235,26 +273,50 @@ public class MovieSystemController {
             if (active == null)
                 throw new Exception("No active rental found.");
 
+            // Set the return date
             active.setDateReturned(date);
 
-            Movie m = findMovie(mid);
-            m.updateAvailability(); // becomes Available again
+            // Find customer for membership type
+            Person customer = findMember(cid);
 
+            // Calculate fee
+            int nights = active.getNightsRented();
+            double fee = active.calculate(customer.getMembership());
+
+            // Update movie availability
+            Movie m = findMovie(mid);
+            m.updateAvailability();
+
+            // Refresh tables
             rentList.getItems().setAll(rentals);
             returnList.getItems().setAll(rentals);
 
+            // Save JSON
             saveList("movies.json", movies);
             saveList("rentals.json", rentals);
+
+            // DISPLAY INFO IN returnInfo TextArea
+            returnInfo.setText("Nights rented: " + nights + " Rental Fee : $" + String.format("%.2f", fee) + "\n"
+            );
 
         } catch (Exception e) {
             showAlert(e.getMessage());
         }
     }
 
+
     //EXIT SYSTEM
     @FXML
     private void exitSystem() {
-        Platform.exit();
+        saveList("members.json", members);
+        saveList("movies.json", movies);
+        saveList("rentals.json", rentals);
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(5));
+        delay.setOnFinished(event -> {
+            Platform.exit(); // Exits the JavaFX application
+        });
+        delay.play();
     }
 
 
@@ -263,7 +325,7 @@ public class MovieSystemController {
         for (Movie m : movies)
             if (m.getMovieID().equalsIgnoreCase(id))
                 return m;
-        throw new Exception("Movie not found.");
+        throw new MovieNotFoundException("Movie not found.");
     }
 
     private Person findMember(String id) throws Exception {

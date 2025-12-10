@@ -55,7 +55,7 @@ public class ExternalMember extends Person {
      *
      * @return the job
      */
-    public String getJob() {
+    public String getInfoOne() {
         return this.job;
     }
 
@@ -64,7 +64,7 @@ public class ExternalMember extends Person {
      *
      * @return the organization name
      */
-    public String getOrganization() {
+    public String getInfoTwo() {
         return this.organization;
     }
 
@@ -85,6 +85,6 @@ public class ExternalMember extends Person {
      */
     @Override
     public void personalInfo(){
-        System.out.println("Job: " + getJob() + "\nOrganization's name: " + getOrganization());
+        System.out.println("Job: " + getInfoOne() + "\nOrganization's name: " + getInfoTwo());
     }
 }

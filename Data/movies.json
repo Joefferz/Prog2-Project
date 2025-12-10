@@ -12,7 +12,7 @@
   {
     "movieID": "MV3",
     "movieName": "Despicable Me",
-    "rentable": true
+    "rentable": false
   },
   {
     "movieID": "MV4",
@@ -22,6 +22,21 @@
   {
     "movieID": "MV5",
     "movieName": "Caroline",
+    "rentable": true
+  },
+  {
+    "movieID": "MV6",
+    "movieName": "Star Wars",
+    "rentable": false
+  },
+  {
+    "movieID": "MV22",
+    "movieName": "",
+    "rentable": true
+  },
+  {
+    "movieID": "MV25",
+    "movieName": "ghg",
     "rentable": true
   }
 ]

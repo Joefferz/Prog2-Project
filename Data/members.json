@@ -1,9 +1,37 @@
 [
   {
     "schoolName": "Vanier",
-    "grade": 90,
-    "name": "Joef",
+    "grade": "90",
+    "name": "Joeffrey",
     "customerID": "ST1",
     "membership": "Student"
+  },
+  {
+    "schoolName": "Vanier",
+    "grade": "75",
+    "name": "Thomas",
+    "customerID": "ST2",
+    "membership": "Student"
+  },
+  {
+    "job": "Engineer",
+    "organization": "TechCorp",
+    "name": "Charles",
+    "customerID": "EX1",
+    "membership": "External"
+  },
+  {
+    "job": "Doctor",
+    "organization": "HealthCareInc",
+    "name": "Danush",
+    "customerID": "EX2",
+    "membership": "External"
+  },
+  {
+    "job": "",
+    "organization": "",
+    "name": "",
+    "customerID": "ST444",
+    "membership": "external"
   }
 ]

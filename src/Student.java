@@ -6,7 +6,7 @@
  */
 public class Student extends Person {
     private String schoolName;
-    private int grade;
+    private String grade;
 
     /**
      * Constructs a Student object with the given personal and academic details.
@@ -17,7 +17,7 @@ public class Student extends Person {
      * @param schoolName  the name of the school the student attends
      * @param grade       the student's grade
      */
-    Student(String name, String customerID, String membership, String schoolName, int grade) {
+    Student(String name, String customerID, String membership, String schoolName, String grade) {
         super(name, customerID, membership);
         this.schoolName = schoolName;
         this.grade = grade;
@@ -55,7 +55,7 @@ public class Student extends Person {
      *
      * @return the name of the school
      */
-    public String getSchoolName() {
+    public String getInfoOne() {
         return this.schoolName;
     }
 
@@ -64,7 +64,7 @@ public class Student extends Person {
      *
      * @return the grade
      */
-    public int getGrade() {
+    public String getInfoTwo() {
         return this.grade;
     }
 
@@ -85,6 +85,6 @@ public class Student extends Person {
      */
     @Override
     public void personalInfo(){
-        System.out.println("School Name: " + getSchoolName() + "\nGrade: " + getGrade());
+        System.out.println("School Name: " + getInfoOne() + "\nGrade: " + getInfoTwo());
     }
 }
