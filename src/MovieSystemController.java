@@ -6,6 +6,9 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -19,6 +22,7 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MovieSystemController {
@@ -201,12 +205,6 @@ public class MovieSystemController {
             if (name.isEmpty())
                 throw new Exception("Movie name cannot be empty.");
 
-            // Check duplicate name (optional but recommended)
-            for (Movie m : movies) {
-                if (m.getMovieName().equalsIgnoreCase(name))
-                    throw new Exception("Movie name already exists.");
-            }
-
             Movie m = new Movie(id, name);
             movies.add(m);
             MovieList.getItems().add(m);
@@ -236,9 +234,6 @@ public class MovieSystemController {
 
             if (name.isEmpty())
                 throw new Exception("Member name cannot be empty.");
-
-            if (mem == null)
-                throw new Exception("Please select a membership type.");
 
             // AUTO-GENERATE ID
             String id;
@@ -456,4 +451,26 @@ public class MovieSystemController {
             return LocalDate.parse(in.nextString());
         }
     }
+
+    //lIST MOVIES IN RENTAL PANE
+    @FXML
+    private void openAvailableMovies() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AvailableMovies.fxml"));
+            Parent root = loader.load();
+
+            // Get controller of the popup
+            AvailableMoviesController controller = loader.getController();
+            controller.loadAvailableMovies(movies);
+
+            Stage stage = new Stage();
+            stage.setTitle("Available Movies");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
