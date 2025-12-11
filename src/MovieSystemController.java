@@ -3,6 +3,8 @@ import Exceptions.MovieAlreadyExistsException;
 import Exceptions.MovieNotFoundException;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -37,7 +39,8 @@ public class MovieSystemController {
     // Members
     @FXML private TableView<Person> MemberList;
     @FXML private TableColumn<Person,String> memID, memName, memMembership, info1, info2;
-    @FXML private TextField memberID, memberName, membership, persoInfo1, persoInfo2;
+    @FXML private TextField memberID, memberName, persoInfo1, persoInfo2;
+    @FXML private ChoiceBox<String> membership;
     @FXML private TextArea memInfo;
 
     // Rent
@@ -123,6 +126,23 @@ public class MovieSystemController {
 
         rentList.getItems().setAll(rentals);
         returnList.getItems().setAll(rentals);
+
+        //Drop down menu
+        membership.setItems(FXCollections.observableArrayList("Student", "External"));
+        membership.setValue("Student");
+
+        //Auto-generate ID
+        movieID.setText(generateMovieID());
+        memberID.setText(generateMemberID("ST"));
+
+        // Update member ID automatically when membership type changes
+        membership.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
+            if (nv.equals("Student")) {
+                memberID.setText(generateMemberID("ST"));
+            } else {
+                memberID.setText(generateMemberID("EX"));
+            }
+        });
     }
 
     //PANE SWITCHING
@@ -132,6 +152,8 @@ public class MovieSystemController {
         MemberPane.setVisible(false);
         RentMovie.setVisible(false);
         ReturnMovie.setVisible(false);
+
+        movieName.clear();
     }
 
     @FXML
@@ -140,6 +162,8 @@ public class MovieSystemController {
         MemberPane.setVisible(true);
         RentMovie.setVisible(false);
         ReturnMovie.setVisible(false);
+
+        memberName.clear();
     }
 
     @FXML
@@ -148,6 +172,9 @@ public class MovieSystemController {
         MemberPane.setVisible(false);
         RentMovie.setVisible(true);
         ReturnMovie.setVisible(false);
+
+        rentMovID.clear();
+        rentMemID.clear();
     }
 
     @FXML
@@ -156,21 +183,28 @@ public class MovieSystemController {
         MemberPane.setVisible(false);
         RentMovie.setVisible(false);
         ReturnMovie.setVisible(true);
+
+        returnMovID.clear();
+        returnMemID.clear();
     }
 
     //ADD MOVIE
     @FXML
     private void addMovie() {
         try {
-            String id = movieID.getText().trim().toUpperCase();
+            // AUTO-GENERATE ID
+            String id = generateMovieID();
+            movieID.setText(id);
+
             String name = movieName.getText().trim();
 
-            if (!id.matches("MV\\d{1,3}"))
-                throw new Exception("Movie ID must be MV1–MV999");
+            if (name.isEmpty())
+                throw new Exception("Movie name cannot be empty.");
 
+            // Check duplicate name (optional but recommended)
             for (Movie m : movies) {
-                if (m.getMovieID().equalsIgnoreCase(id))
-                    throw new MovieAlreadyExistsException("Movie ID already exists.");
+                if (m.getMovieName().equalsIgnoreCase(name))
+                    throw new Exception("Movie name already exists.");
             }
 
             Movie m = new Movie(id, name);
@@ -179,41 +213,70 @@ public class MovieSystemController {
 
             saveList("movies.json", movies);
 
+            showAlert("Movie added successfully!");
+
+            // Prepare ID for next movie
+            movieID.setText(generateMovieID());
+            movieName.clear();
+
         } catch (Exception e) {
             showAlert(e.getMessage());
         }
     }
 
+
     //ADD MEMBER
     @FXML
     private void addMember() {
         try {
-            String id = memberID.getText().toUpperCase().trim();
             String name = memberName.getText().trim();
-            String mem = membership.getText().trim();
+            String mem = membership.getValue();
             String infoA = persoInfo1.getText().trim();
             String infoB = persoInfo2.getText().trim();
 
-            if (!id.matches("(ST|EX)\\d{1,3}"))
-                throw new Exception("Member ID must be ST### or EX###.");
+            if (name.isEmpty())
+                throw new Exception("Member name cannot be empty.");
 
+            if (mem == null)
+                throw new Exception("Please select a membership type.");
+
+            // AUTO-GENERATE ID
+            String id;
+            if (mem.equals("Student"))
+                id = generateMemberID("ST");
+            else
+                id = generateMemberID("EX");
+
+            memberID.setText(id);
+
+            // Prevent duplicate ID
             for (Person p : members) {
                 if (p.getCustomerID().equalsIgnoreCase(id))
                     throw new MemberAlreadyExistsException("Member ID already exists.");
             }
 
             Person p;
-            if (mem.equalsIgnoreCase("Student")) {
+            if (mem.equals("Student")) {
                 p = new Student(name, id, mem, infoA, infoB);
-            } else if (mem.equalsIgnoreCase("External")) {
-                p = new ExternalMember(name, id, mem, infoA, infoB);
             } else {
-                throw new Exception("Membership must be Student or External.");
+                p = new ExternalMember(name, id, mem, infoA, infoB);
             }
 
             members.add(p);
             MemberList.getItems().add(p);
             saveList("members.json", members);
+
+            showAlert("Member added successfully!");
+
+            // Prepare next ID
+            if (mem.equals("Student"))
+                memberID.setText(generateMemberID("ST"));
+            else
+                memberID.setText(generateMemberID("EX"));
+
+            memberName.clear();
+            persoInfo1.clear();
+            persoInfo2.clear();
 
         } catch (Exception e) {
             showAlert(e.getMessage());
@@ -311,12 +374,7 @@ public class MovieSystemController {
         saveList("members.json", members);
         saveList("movies.json", movies);
         saveList("rentals.json", rentals);
-
-        PauseTransition delay = new PauseTransition(Duration.seconds(5));
-        delay.setOnFinished(event -> {
-            Platform.exit(); // Exits the JavaFX application
-        });
-        delay.play();
+        Platform.exit();
     }
 
 
@@ -340,6 +398,28 @@ public class MovieSystemController {
         a.show();
     }
 
+    //Auto generate movie IDs
+    private String generateMovieID() {
+        int max = 0;
+        for (Movie m : movies) {
+            String numPart = m.getMovieID().substring(2); // remove "MV"
+            max = Math.max(max, Integer.parseInt(numPart));
+        }
+        return "MV" + (max + 1);
+    }
+
+    //Auto generate member IDs
+    private String generateMemberID(String prefix) { // prefix = ST or EX
+        int max = 0;
+        for (Person p : members) {
+            if (p.getCustomerID().startsWith(prefix)) {
+                String num = p.getCustomerID().substring(2);
+                max = Math.max(max, Integer.parseInt(num));
+            }
+        }
+        return prefix + (max + 1);
+    }
+
     //JSON METHODS
     private <T> ArrayList<T> loadList(String file, java.lang.reflect.Type type) {
         try (FileReader r = new FileReader(new File("Data", file))) {
@@ -357,12 +437,22 @@ public class MovieSystemController {
 
     // LocalDate adapter
     private static class LocalDateAdapter extends com.google.gson.TypeAdapter<LocalDate> {
+
         @Override
         public void write(JsonWriter out, LocalDate date) throws IOException {
-            out.value(date.toString());
+            if (date == null) {
+                out.nullValue();   // write proper JSON null
+            } else {
+                out.value(date.toString());
+            }
         }
+
         @Override
         public LocalDate read(JsonReader in) throws IOException {
+            if (in.peek() == com.google.gson.stream.JsonToken.NULL) {
+                in.nextNull();
+                return null;        // read JSON null properly
+            }
             return LocalDate.parse(in.nextString());
         }
     }

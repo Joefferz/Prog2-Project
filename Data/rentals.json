@@ -3,3 +3,10 @@
     "customerRenterID": "ST1",
     "movieRentedID": "MV1",
     "dateBorrowed": "2025-12-07"
+  },
+  {
+    "customerRenterID": "EX1",
+    "movieRentedID": "MV6",
+    "dateBorrowed": "2025-12-09"
+  }
+]

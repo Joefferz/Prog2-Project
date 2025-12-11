@@ -7,12 +7,12 @@
   {
     "movieID": "MV2",
     "movieName": "The Grinch",
-    "rentable": false
+    "rentable": true
   },
   {
     "movieID": "MV3",
     "movieName": "Despicable Me",
-    "rentable": false
+    "rentable": true
   },
   {
     "movieID": "MV4",
@@ -30,13 +30,8 @@
     "rentable": false
   },
   {
-    "movieID": "MV22",
-    "movieName": "",
-    "rentable": true
-  },
-  {
-    "movieID": "MV25",
-    "movieName": "ghg",
+    "movieID": "MV7",
+    "movieName": "The Secret Life of Pets",
     "rentable": true
   }
 ]

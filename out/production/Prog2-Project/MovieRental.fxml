@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -92,10 +93,10 @@
             <Button fx:id="addMbr" layoutX="579.0" layoutY="68.0" mnemonicParsing="false" onAction="#addMember" text="ADD" />
             <Label layoutX="443.0" layoutY="24.0" text="MEMBERSHIP" />
             <Label layoutX="40.0" layoutY="72.0" text="Additional Info" />
-            <TextField fx:id="membership" layoutX="525.0" layoutY="20.0" />
             <TextField fx:id="persoInfo1" layoutX="128.0" layoutY="68.0" />
             <Label layoutX="294.0" layoutY="72.0" text="Additional Info" />
             <TextField fx:id="persoInfo2" layoutX="382.0" layoutY="68.0" />
+            <ChoiceBox fx:id="membership" layoutX="531.0" layoutY="20.0" prefWidth="150.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="RentMovie" layoutX="87.0" layoutY="44.0" prefHeight="456.0" prefWidth="714.0" visible="false">
