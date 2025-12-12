@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.movierental"},{"l":"com.movierental.Exceptions"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"main.Exceptions"},{"l":"main.java.com.movierental.test"}];updateSearchResults();
