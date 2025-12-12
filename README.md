@@ -29,6 +29,8 @@ It allows users to:
 ## HOW TO RUN
 
 Download this project's ZIP file by clicking: <>Code --> Download ZIP
+Once imported, under src/main/java/com/movierental/test
+Run the Main class.
 
 ### RECOMMENDED
 
@@ -44,8 +46,8 @@ and how to add gson 2.10.1 to your library
 
 ## NOTICE
 
-* You can check some preview images [here](https://github.com/Joefferz/Prog2-Project/tree/master/images)
-* JavaDoc can be found in the code. Or by clicking
+* You can check some preview images and Unit Testing resu;ts [here](https://github.com/Joefferz/Prog2-Project/tree/master/images)
+* JavaDoc can be found in the code.
 * GUI coming soon!
 
 ---
