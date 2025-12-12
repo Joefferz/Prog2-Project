@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.movierental.test.MovieSystemController">
+    <children>
+        <AnchorPane layoutX="54.0" layoutY="-1.0" prefHeight="45.0" prefWidth="800.0" style="-fx-background-color: #9e9e9e;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Label layoutX="14.0" layoutY="12.0" text="MOVIE RENTAL SYSTEM">
+               <font>
+                  <Font name="Impact" size="18.0" />
+               </font>
+            </Label>
+         </children></AnchorPane>
+        <AnchorPane layoutY="44.0" prefHeight="456.0" prefWidth="87.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+            <children>
+                <VBox alignment="TOP_CENTER" layoutX="1.0" prefHeight="170.0" prefWidth="86.0" spacing="2.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Button fx:id="movie" mnemonicParsing="false" onAction="#showMovies" prefHeight="30.0" prefWidth="86.0" stylesheets="@Sidebar-Buttons.css" text="Movies">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="member" mnemonicParsing="false" onAction="#showMembers" prefHeight="30.0" prefWidth="86.0" stylesheets="@Sidebar-Buttons.css" text="Members">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="rent" mnemonicParsing="false" onAction="#showRentals" prefHeight="30.0" prefWidth="86.0" stylesheets="@Sidebar-Buttons.css" text="Rent">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="returning" mnemonicParsing="false" onAction="#showRentalsToReturn" prefHeight="30.0" prefWidth="86.0" stylesheets="@Sidebar-Buttons.css" text="Return">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="exit" mnemonicParsing="false" onAction="#exitSystem" prefHeight="30.0" prefWidth="88.0" stylesheets="@Sidebar-Buttons.css" text="Exit">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+               </children>
+                </VBox>
+            </children>
+        </AnchorPane>
+      <AnchorPane fx:id="MoviePane" layoutX="87.0" layoutY="44.0" prefHeight="456.0" prefWidth="714.0">
+         <children>
+            <TableView fx:id="MovieList" layoutX="40.0" layoutY="107.0" prefHeight="254.0" prefWidth="634.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
+              <columns>
+                <TableColumn fx:id="mvID" prefWidth="75.0" text="ID" />
+                <TableColumn fx:id="mvName" prefWidth="434.0" text="NAME" />
+                  <TableColumn fx:id="mvStatus" prefWidth="123.0" text="STATUS" />
+              </columns>
+            </TableView>
+            <TextArea fx:id="movieInfo" editable="false" layoutX="41.0" layoutY="386.0" prefHeight="45.0" prefWidth="200.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
+            <Label layoutX="40.0" layoutY="23.0" text="ID" />
+            <Label layoutX="40.0" layoutY="63.0" text="NAME" />
+            <Label layoutX="547.0" layoutY="51.0" />
+            <TextField fx:id="movieID" editable="false" layoutX="89.0" layoutY="19.0" />
+            <TextField fx:id="movieName" layoutX="89.0" layoutY="59.0" />
+            <Button fx:id="addMV" layoutX="262.0" layoutY="59.0" mnemonicParsing="false" onAction="#addMovie" text="ADD" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="MemberPane" layoutX="87.0" layoutY="44.0" prefHeight="456.0" prefWidth="714.0" visible="false">
+         <children>
+            <TableView fx:id="MemberList" layoutX="40.0" layoutY="107.0" prefHeight="254.0" prefWidth="634.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
+               <columns>
+                  <TableColumn fx:id="memID" prefWidth="49.0" text="ID" />
+                  <TableColumn fx:id="memName" prefWidth="164.0" text="NAME" />
+                  <TableColumn fx:id="memMembership" prefWidth="123.0" text="MEMBERSHIP" />
+                  <TableColumn fx:id="info1" prefWidth="149.0" text="INFO 1" />
+                  <TableColumn fx:id="info2" prefWidth="148.0" text="INFO 2" />
+               </columns>
+            </TableView>
+            <TextArea fx:id="memInfo" editable="false" layoutX="41.0" layoutY="386.0" prefHeight="45.0" prefWidth="200.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
+            <Label layoutX="40.0" layoutY="24.0" text="ID" />
+            <Label layoutX="236.0" layoutY="24.0" text="NAME" />
+            <Label layoutX="547.0" layoutY="51.0" />
+            <TextField fx:id="memberID" editable="false" layoutX="67.0" layoutY="20.0" />
+            <TextField fx:id="memberName" layoutX="277.0" layoutY="20.0" />
+            <Button fx:id="addMbr" layoutX="579.0" layoutY="68.0" mnemonicParsing="false" onAction="#addMember" text="ADD" />
+            <Label layoutX="443.0" layoutY="24.0" text="MEMBERSHIP" />
+            <Label fx:id="personal1" layoutX="40.0" layoutY="72.0" text="Additional Info" />
+            <TextField fx:id="persoInfo1" layoutX="128.0" layoutY="68.0" />
+            <Label fx:id="personal2" layoutX="294.0" layoutY="72.0" text="Additional Info" />
+            <TextField fx:id="persoInfo2" layoutX="382.0" layoutY="68.0" />
+            <ChoiceBox fx:id="membership" layoutX="531.0" layoutY="20.0" prefWidth="150.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="RentMovie" layoutX="87.0" layoutY="44.0" prefHeight="456.0" prefWidth="714.0" visible="false">
+         <children>
+            <TableView fx:id="rentList" layoutX="40.0" layoutY="113.0" prefHeight="254.0" prefWidth="397.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
+               <columns>
+                  <TableColumn fx:id="mvRTID" prefWidth="89.0" text="MOVIE ID" />
+                  <TableColumn fx:id="mbrRTID" prefWidth="146.0" text="RENTED BY" />
+                  <TableColumn fx:id="rtBorrow" prefWidth="205.0" text="BORROW DATE" />
+                  <TableColumn fx:id="rtReturn" prefWidth="193.0" text="RETURN DATE" />
+               </columns>
+            </TableView>
+            <TextArea fx:id="rentInfo" editable="false" layoutX="41.0" layoutY="386.0" prefHeight="45.0" prefWidth="200.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
+            <Label layoutX="40.0" layoutY="24.0" text="ENTER MOVIE ID" />
+            <Label layoutX="40.0" layoutY="72.0" text="ENTER MEMBER ID" />
+            <Label layoutX="547.0" layoutY="51.0" />
+            <TextField fx:id="rentMovID" layoutX="159.0" layoutY="20.0" />
+            <TextField fx:id="rentMemID" layoutX="159.0" layoutY="68.0" />
+            <Button fx:id="rentMV" layoutX="318.0" layoutY="68.0" mnemonicParsing="false" onAction="#rentMovie" text="RENT" />
+            <Button layoutX="318.0" layoutY="20.0" mnemonicParsing="false" onAction="#openAvailableMovies" text="LIST AVAILABLE MOVIES" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="ReturnMovie" layoutX="87.0" layoutY="44.0" prefHeight="456.0" prefWidth="714.0" visible="false">
+         <children>
+            <TableView fx:id="returnList" layoutX="40.0" layoutY="107.0" prefHeight="254.0" prefWidth="634.0">
+               <columns>
+                  <TableColumn fx:id="mvRTNID" prefWidth="89.0" text="MOVIE ID" />
+                  <TableColumn fx:id="mbrRTNID" prefWidth="146.0" text="RENTED BY" />
+                  <TableColumn fx:id="rtnBorrow" prefWidth="205.0" text="BORROW DATE" />
+                  <TableColumn fx:id="rtnReturn" prefWidth="193.0" text="RETURN DATE" />
+               </columns>
+            </TableView>
+            <TextArea fx:id="returnInfo" editable="false" layoutX="41.0" layoutY="386.0" prefHeight="45.0" prefWidth="200.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
+            <Label layoutX="40.0" layoutY="24.0" text="MOVIE ID" />
+            <Label layoutX="279.0" layoutY="24.0" text="MEMBER ID" />
+            <Label layoutX="547.0" layoutY="51.0" />
+            <TextField fx:id="returnMovID" layoutX="103.0" layoutY="20.0" />
+            <TextField fx:id="returnMemID" layoutX="357.0" layoutY="20.0" />
+            <Button fx:id="returnMV" layoutX="446.0" layoutY="68.0" mnemonicParsing="false" onAction="#returnMovie" text="RETURN" />
+            <DatePicker fx:id="returnDate" layoutX="130.0" layoutY="68.0" />
+            <Label layoutX="40.0" layoutY="72.0" text="RETURN DATE" />
+         </children>
+      </AnchorPane>
+    </children>
+</AnchorPane>
