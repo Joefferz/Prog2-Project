@@ -20,8 +20,9 @@ It allows users to:
 
 ## REQUIREMENTS
 
-1. Install Java 8+
-2. Add the Gson (2.10.1 or higher) library to your project
+1. Install Java 21.0.9
+2. Install JavaFX 21.0.9
+3. Add the Gson (2.10.1 or higher) library to your project
 
 ---
 
@@ -44,7 +45,7 @@ and how to add gson 2.10.1 to your library
 ## NOTICE
 
 * You can check some preview images [here](https://github.com/Joefferz/Prog2-Project/tree/master/images)
-* JavaDoc can be found in the code. Or by clicking [here](https://joefferz.github.io/Prog2-Project/)
+* JavaDoc can be found in the code. Or by clicking
 * GUI coming soon!
 
 ---
