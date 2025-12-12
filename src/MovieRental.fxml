@@ -55,7 +55,7 @@
                 </VBox>
             </children>
         </AnchorPane>
-      <AnchorPane fx:id="MoviePane" layoutX="87.0" layoutY="44.0" prefHeight="456.0" prefWidth="714.0" visible="false">
+      <AnchorPane fx:id="MoviePane" layoutX="87.0" layoutY="44.0" prefHeight="456.0" prefWidth="714.0">
          <children>
             <TableView fx:id="MovieList" layoutX="40.0" layoutY="107.0" prefHeight="254.0" prefWidth="634.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
               <columns>
@@ -64,7 +64,7 @@
                   <TableColumn fx:id="mvStatus" prefWidth="123.0" text="STATUS" />
               </columns>
             </TableView>
-            <TextArea fx:id="movieInfo" layoutX="41.0" layoutY="386.0" prefHeight="45.0" prefWidth="200.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
+            <TextArea fx:id="movieInfo" editable="false" layoutX="41.0" layoutY="386.0" prefHeight="45.0" prefWidth="200.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
             <Label layoutX="40.0" layoutY="23.0" text="ID" />
             <Label layoutX="40.0" layoutY="63.0" text="NAME" />
             <Label layoutX="547.0" layoutY="51.0" />
@@ -84,7 +84,7 @@
                   <TableColumn fx:id="info2" prefWidth="148.0" text="INFO 2" />
                </columns>
             </TableView>
-            <TextArea fx:id="memInfo" layoutX="41.0" layoutY="386.0" prefHeight="45.0" prefWidth="200.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
+            <TextArea fx:id="memInfo" editable="false" layoutX="41.0" layoutY="386.0" prefHeight="45.0" prefWidth="200.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
             <Label layoutX="40.0" layoutY="24.0" text="ID" />
             <Label layoutX="236.0" layoutY="24.0" text="NAME" />
             <Label layoutX="547.0" layoutY="51.0" />
@@ -92,14 +92,14 @@
             <TextField fx:id="memberName" layoutX="277.0" layoutY="20.0" />
             <Button fx:id="addMbr" layoutX="579.0" layoutY="68.0" mnemonicParsing="false" onAction="#addMember" text="ADD" />
             <Label layoutX="443.0" layoutY="24.0" text="MEMBERSHIP" />
-            <Label layoutX="40.0" layoutY="72.0" text="Additional Info" />
+            <Label fx:id="personal1" layoutX="40.0" layoutY="72.0" text="Additional Info" />
             <TextField fx:id="persoInfo1" layoutX="128.0" layoutY="68.0" />
-            <Label layoutX="294.0" layoutY="72.0" text="Additional Info" />
+            <Label fx:id="personal2" layoutX="294.0" layoutY="72.0" text="Additional Info" />
             <TextField fx:id="persoInfo2" layoutX="382.0" layoutY="68.0" />
             <ChoiceBox fx:id="membership" layoutX="531.0" layoutY="20.0" prefWidth="150.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="RentMovie" layoutX="87.0" layoutY="44.0" prefHeight="456.0" prefWidth="714.0">
+      <AnchorPane fx:id="RentMovie" layoutX="87.0" layoutY="44.0" prefHeight="456.0" prefWidth="714.0" visible="false">
          <children>
             <TableView fx:id="rentList" layoutX="40.0" layoutY="113.0" prefHeight="254.0" prefWidth="397.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
                <columns>
@@ -109,7 +109,7 @@
                   <TableColumn fx:id="rtReturn" prefWidth="193.0" text="RETURN DATE" />
                </columns>
             </TableView>
-            <TextArea fx:id="rentInfo" layoutX="41.0" layoutY="386.0" prefHeight="45.0" prefWidth="200.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
+            <TextArea fx:id="rentInfo" editable="false" layoutX="41.0" layoutY="386.0" prefHeight="45.0" prefWidth="200.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
             <Label layoutX="40.0" layoutY="24.0" text="ENTER MOVIE ID" />
             <Label layoutX="40.0" layoutY="72.0" text="ENTER MEMBER ID" />
             <Label layoutX="547.0" layoutY="51.0" />
@@ -129,7 +129,7 @@
                   <TableColumn fx:id="rtnReturn" prefWidth="193.0" text="RETURN DATE" />
                </columns>
             </TableView>
-            <TextArea fx:id="returnInfo" layoutX="41.0" layoutY="386.0" prefHeight="45.0" prefWidth="200.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
+            <TextArea fx:id="returnInfo" editable="false" layoutX="41.0" layoutY="386.0" prefHeight="45.0" prefWidth="200.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
             <Label layoutX="40.0" layoutY="24.0" text="MOVIE ID" />
             <Label layoutX="279.0" layoutY="24.0" text="MEMBER ID" />
             <Label layoutX="547.0" layoutY="51.0" />

@@ -33,5 +33,20 @@
     "movieID": "MV7",
     "movieName": "The Secret Life of Pets",
     "rentable": true
+  },
+  {
+    "movieID": "MV8",
+    "movieName": "Back to the Future",
+    "rentable": true
+  },
+  {
+    "movieID": "MV9",
+    "movieName": "Zootopia",
+    "rentable": true
+  },
+  {
+    "movieID": "MV10",
+    "movieName": "Shrek",
+    "rentable": true
   }
 ]

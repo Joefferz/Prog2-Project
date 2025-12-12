@@ -26,5 +26,12 @@
     "name": "Danush",
     "customerID": "EX2",
     "membership": "External"
+  },
+  {
+    "schoolName": "Saint-Laurent",
+    "grade": "89",
+    "name": "Francis",
+    "customerID": "ST3",
+    "membership": "Student"
   }
 ]

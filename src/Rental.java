@@ -103,9 +103,7 @@ public class Rental implements Payment {
 
         if (dateReturned == null) {
             System.out.println("Not returned.");
-        }
-        else
-        {
+        } else {
             System.out.println("Returned on: " + dateReturned.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
         }
     }
@@ -129,9 +127,7 @@ public class Rental implements Payment {
 
         if (membership.equalsIgnoreCase("student")) {
             fee = STUDENT_FEE + (extraNights);
-        }
-        else
-        {
+        } else {
             fee = EXTERNAL_MEMBER_FEE + (extraNights * 2);
         }
 

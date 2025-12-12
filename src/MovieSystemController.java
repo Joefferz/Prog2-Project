@@ -46,6 +46,7 @@ public class MovieSystemController {
     @FXML private TextField memberID, memberName, persoInfo1, persoInfo2;
     @FXML private ChoiceBox<String> membership;
     @FXML private TextArea memInfo;
+    @FXML private Label personal1, personal2;
 
     // Rent
     @FXML private TableView<Rental> rentList;
@@ -143,10 +144,29 @@ public class MovieSystemController {
         membership.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
             if (nv.equals("Student")) {
                 memberID.setText(generateMemberID("ST"));
+                personal1.setText("SCHOOL NAME");
+                personal2.setText("GRADE");
+                persoInfo1.clear();
+                persoInfo2.clear();
             } else {
                 memberID.setText(generateMemberID("EX"));
+                personal1.setText("JOB");
+                personal2.setText("ORGANISATION");
+                persoInfo1.clear();
+                persoInfo2.clear();
             }
         });
+
+        //Personal info labels default values
+        if ("Student".equals(membership.getValue())) {
+            personal1.setText("SCHOOL NAME");
+            personal2.setText("GRADE");
+            memberID.setText(generateMemberID("ST"));
+        } else {
+            personal1.setText("JOB");
+            personal2.setText("ORGANISATION");
+            memberID.setText(generateMemberID("EX"));
+        }
     }
 
     //PANE SWITCHING
@@ -195,6 +215,8 @@ public class MovieSystemController {
     //ADD MOVIE
     @FXML
     private void addMovie() {
+        movieInfo.clear();
+
         try {
             // AUTO-GENERATE ID
             String id = generateMovieID();
@@ -211,7 +233,7 @@ public class MovieSystemController {
 
             saveList("movies.json", movies);
 
-            showAlert("Movie added successfully!");
+            movieInfo.setText("Movie added successfully!");
 
             // Prepare ID for next movie
             movieID.setText(generateMovieID());
@@ -226,6 +248,8 @@ public class MovieSystemController {
     //ADD MEMBER
     @FXML
     private void addMember() {
+        memInfo.clear();
+
         try {
             String name = memberName.getText().trim();
             String mem = membership.getValue();
@@ -234,13 +258,19 @@ public class MovieSystemController {
 
             if (name.isEmpty())
                 throw new Exception("Member name cannot be empty.");
+            if (infoA.isEmpty())
+                throw new Exception("Member info cannot be empty.");
+            if (infoB.isEmpty())
+                throw new Exception("Member info cannot be empty.");
 
             // AUTO-GENERATE ID
             String id;
-            if (mem.equals("Student"))
+            if (mem.equals("Student")) {
                 id = generateMemberID("ST");
-            else
+            }
+            else {
                 id = generateMemberID("EX");
+            }
 
             memberID.setText(id);
 
@@ -261,7 +291,7 @@ public class MovieSystemController {
             MemberList.getItems().add(p);
             saveList("members.json", members);
 
-            showAlert("Member added successfully!");
+            memInfo.setText("Member added successfully!");
 
             // Prepare next ID
             if (mem.equals("Student"))
@@ -281,6 +311,8 @@ public class MovieSystemController {
     //RENT
     @FXML
     private void rentMovie() {
+        rentInfo.clear();
+
         try {
             String mid = rentMovID.getText().toUpperCase().trim();
             String cid = rentMemID.getText().toUpperCase().trim();
@@ -299,6 +331,8 @@ public class MovieSystemController {
             rentList.getItems().setAll(rentals);
             returnList.getItems().setAll(rentals);
 
+            rentInfo.setText("Movie rented successfully!");
+
             saveList("movies.json", movies);
             saveList("rentals.json", rentals);
 
@@ -310,51 +344,68 @@ public class MovieSystemController {
     //RETURNING MOVIE
     @FXML
     private void returnMovie() {
+        returnInfo.clear();
+
         try {
             String mid = returnMovID.getText().toUpperCase().trim();
             String cid = returnMemID.getText().toUpperCase().trim();
             LocalDate date = returnDate.getValue();
 
-            if (date == null)
-                throw new Exception("Select a return date.");
+            // input checks
+            if (mid.isEmpty()) throw new Exception("Movie ID cannot be empty.");
+            if (cid.isEmpty()) throw new Exception("Member ID cannot be empty.");
+            if (date == null) throw new Exception("Select a return date.");
 
-            // Find active rental
-            Rental active = null;
-            for (Rental r : rentals) {
-                if (r.getCustomerRenterID().equalsIgnoreCase(cid) &&
-                        r.getMovieRentedID().equalsIgnoreCase(mid) &&
-                        r.getDateReturned() == null) {
-                    active = r;
-                }
+            // find movie (findMovie throws if not found)
+            Movie movie;
+            try {
+                movie = findMovie(mid);
+            } catch (Exception ex) {
+                throw new Exception("Movie not found.");
             }
 
-            if (active == null)
-                throw new Exception("No active rental found.");
+            // check movie status (assumes rentable field: "Available" or "Unavailable")
+            if (movie.isRentable().equalsIgnoreCase("Available")) {
+                throw new Exception("This movie is not rented right now.");
+            }
 
-            // Set the return date
+            // find active rental for this member + movie
+            Rental active = rentals.stream()
+                    .filter(r -> r.getMovieRentedID().equalsIgnoreCase(mid))
+                    .filter(r -> r.getCustomerRenterID().equalsIgnoreCase(cid))
+                    .filter(r -> r.getDateReturned() == null)
+                    .findFirst()
+                    .orElse(null);
+
+            if (active == null) {
+                // member hasn't rented this movie
+                throw new Exception("This movie is not rented by this member.");
+            }
+
+            // set return date and compute fees
             active.setDateReturned(date);
 
-            // Find customer for membership type
-            Person customer = findMember(cid);
-
-            // Calculate fee
+            Person customer = findMember(cid); // will throw if member not found
             int nights = active.getNightsRented();
             double fee = active.calculate(customer.getMembership());
 
-            // Update movie availability
-            Movie m = findMovie(mid);
-            m.updateAvailability();
+            movie.updateAvailability();
 
-            // Refresh tables
+            // refresh UI & save
             rentList.getItems().setAll(rentals);
             returnList.getItems().setAll(rentals);
 
-            // Save JSON
-            saveList("movies.json", movies);
-            saveList("rentals.json", rentals);
+            try {
+                saveList("movies.json", movies);
+                saveList("rentals.json", rentals);
+            } catch (Exception ex) {
+                // if saveList swallows exceptions currently, consider logging here
+                ex.printStackTrace();
+            }
 
-            // DISPLAY INFO IN returnInfo TextArea
-            returnInfo.setText("Nights rented: " + nights + " Rental Fee : $" + String.format("%.2f", fee) + "\n"
+            returnInfo.setText(
+                    "Returned successfully! | Nights rented: " + nights +
+                            " | Rental Fee: $" + String.format("%.2f", fee)
             );
 
         } catch (Exception e) {
@@ -472,5 +523,4 @@ public class MovieSystemController {
             e.printStackTrace();
         }
     }
-
 }
